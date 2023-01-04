@@ -1,20 +1,7 @@
-<html>
+# Francis Deck, Bassist
 
-<head>
-<meta http-equiv="Content-Type"
-content="text/html; charset=iso-8859-1">
-<meta name="CREATED" content="0;0">
-<meta name="CHANGED" content="20090525;17010600">
-<meta name="Date" content="03/08/14">
-</head>
+## Double Bass | Electric Bass | Electronics and Speakers
 
-<body bgcolor="#FFFFFF" text="#000000" link="#0000FF"
-vlink="#800080" lang="en-US" dir="LTR">
-
-<h1 align="center"><font color="#671641">Francis Deck, Bassist</font></h1>
-
-<h3 align="center"><font color="#671641">String Bass | Electric
-Bass</font></h3>
 
 <p align="center"><img src="img/untitled2.jpg" width="345"
 height="506" name="graphics1"> </p>
