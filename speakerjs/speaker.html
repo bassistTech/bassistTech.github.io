@@ -101,8 +101,8 @@
 				formparama('Volume', 'V_liters', '32', 'Liters')
 				formparama('Number of drivers', 'Ndrivers', '1', '')
 				formparama('Port tuning', 'Fport', '40', 'Hz, set to 0 for sealed box')
-				formparama('Port width', 'Aport', '5', 'cm')
-				formparama('Port height', 'Bport', '8', 'cm')
+				formparama('Port width', 'Aport', '21.5', 'cm')
+				formparama('Port height', 'Bport', '3.5', 'cm')
 				formparama('Number of ports', 'nPorts', '1', '')
 				formparama('Port end correction', 'endCorrect', '0.732', '')
 				formparama('Amplifier power', 'PinExc', '150', 'Watts')
@@ -127,7 +127,9 @@
 		<textarea cols="80" rows="20" name="output">Reported data</textarea><br><br>
 		URL for this speaker. The following URL will reproduce your design. You can send this URL
 		to a friend or save it in a file as way to "save" your design.<br><br>
-		<textarea cols="80" rows="10" name="url">URL</textarea>
+		<textarea cols="80" rows="10" name="url">URL</textarea><br><br>
+		Raw data, use for your enjoyment.
+		<textarea cols="80" rows="10" name="rawdata">raw data</textarea><br><br>
 	</form>
 
 <script type="text/javascript">
@@ -303,9 +305,11 @@
 			s2 = []; // sensitivity at amplifier power
 			m1 = []; // port air speed in Mach
 			m2 = []; // port air speed, waveform based
+			raws = 'f(hz), x(mm), v(mach)\n';
 			for (f = 20; f <= 250; f += 1)
 			{
 				u = xexcur(f);
+				raws = raws + f + ', ' + u[0] + ', ' + u[1] + '\n';
 				d1.push([f, u[0]]);
 				m1.push([f, u[1]]);
 				s1.push([f, u[2]]);
@@ -322,7 +326,7 @@
 				m2.push([f,u1sum]);
 				 
 			}
-			
+			document.forms['after'].rawdata.value = raws;
 			d3 = [[20,Xmax_mm],[250,Xmax_mm]];
 			xa = {
 					transform: function (v) {return Math.log(v)},
