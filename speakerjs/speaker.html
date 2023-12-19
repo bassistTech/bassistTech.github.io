@@ -6,7 +6,7 @@
 
 <body>
     <h1>Speaker Modeling Program</h1>
-	Revision date: March 9, 2016<br>
+	Revision date: December 18, 2023<br>
 	<br>
 	This is a proof-of-concept that I wrote to teach myself JavaScript. It's not intended for 
 	serious design work. However, it uses the basic speaker modeling formulas that I've derived
@@ -160,12 +160,12 @@
 		return dprint(javaname + " = ", v)
 	}
 
-	// System parameters, OK to change
+	// System parameters, OK to change, but these are typical
 
 	PinSens = dprint("Power input for sensitivity graph = ", 1.0);
 	Dist = dprint("Distance for SPL graph = ", 1.0);
 
-	// Physical constants in SI units
+	// Physical constants in SI units, change these if you live on a different planet
 
 	Patm = dprint("Atmospheric pressure = ", 101300);
 	b = dprint("Adiabatic constant = ", 1.4);
@@ -342,8 +342,11 @@
 				{xaxis: xa});
 				
 			$.plot($("#mach"), 
-				[{label: "Peak @ " + PinExc + " W", data: m1},
-				{label: "Waveform based @ " + PinExc + " W", data: m2}],
+				[
+					{label: "Peak @ " + PinExc + " W", data: m1},
+					// Decided that waveform based port air speed isn't useful
+					// {label: "Waveform based @ " + PinExc + " W", data: m2}
+				],
 				{xaxis: xa});
 		}
 		
