@@ -169,11 +169,12 @@
 
 	// Physical constants in SI units, change these if you live on a different planet
 
-	Patm = dprint("Atmospheric pressure = ", 101300);
+	Patm = dprint("Atmospheric pressure = ", 101325);
 	b = dprint("Adiabatic constant = ", 1.4);
 	bpatm = dprint("bpatm = ", b*Patm);
 	rho = dprint("Density of air = ", 1.18);
-	c = dprint("Speed of sound = ", 345);
+	// c = dprint("Speed of sound = ", 345);
+	c = dprint("Speed of sound = ", Math.sqrt(bpatm/rho));
 	splref = dprint("SPL reference = ", 2e-5);
 
 	// Get stuff
