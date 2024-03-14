@@ -1,34 +1,34 @@
 '''
-flet publish speaker.py
-python -m http.server --directory dist
+flet build web
+python -m http.server --directory build/web
 '''
 
 import flet as ft
 import sys
 
 emi2512ii = { # Eminence DeltaLite 2512-ii
-    'F_s': 37, # resonant frequency in Hz
-    'R_e': 5.04, # series resistance of voice coil in Ohms
-    'L_e': 0.46*0.001, # inductance of voice coil converted from mH to H
-    'Q_ms': 3.13, # mechanical contribution to Q factor
-    'Q_es': 0.44, # electromagnetic contribution to Q factor
-    'Vas': 147*0.001, # equivalent box volume, liters converted to m^3
-    'Xmax': 4.90*0.001, # maximum excursion, converted from mm to m
-    'S_d': 519.5/1e4, # cone area converted from cm^2 to m^2
+    'F_s': {'val': 37, 'units': 'Hz'}, # resonant frequency in Hz
+    'R_e': {'val': 5.04, 'units': 'Ohms'}, # series resistance of voice coil in Ohms
+    'L_e': {'val': 0.46, 'units': 'mH', 'mult': 0.001}, # inductance of voice coil converted from mH to H
+    'Q_ms': {'val': 3.13}, # mechanical contribution to Q factor
+    'Q_es': {'val': 0.44}, # electromagnetic contribution to Q factor
+    'Vas': {'val': 147, 'units': 'liters', 'mult': 0.001}, # equivalent box volume, liters converted to m^3
+    'Xmax': {'val': 4.90, 'units': 'mm', 'mult': 0.001}, # maximum excursion, converted from mm to m
+    'S_d': {'val': 519.5, 'units': 'cm^2', 'mult': 1e-4}, # cone area converted from cm^2 to m^2
 }
 
 box1 = { # My little 12" box
-    'Znom': 8,
-    'Pin': 100,
-    'V_box': 32*1e-3, # box volume, 32 l converted to m^3
-    'ported': True,
-    'f_port': 40, # port tuning frequency in Hz
-    'Q_port': 50, # value borrowed from WinISD
-    'portShape': 'rectangular', # circular or rectangular
-    'd_port': 0, # diameter of port if circular in cm converted to m
-    'a_port': 3.5*0.01, # width of port if rectangular
-    'b_port': 21.5*0.01, # height of port if rectangular
-    'endCorrect': 0.732, # port end correction factor
+    'Znom': {'val': 8, 'units': 'Ohms'},
+    'Pin': {'val': 100, 'units': 'W rms'},
+    'V_box': {'val': 32, 'units': 'liters', 'mult': 1e-3}, # box volume, 32 l converted to m^3
+    'n_ports': {'val': 1, 'units': 'number of ports or 0 for sealed'},
+    'f_port': {'val': 40, 'units': 'Hz'}, # port tuning frequency in Hz
+    'Q_port': {'val': 50}, # value borrowed from WinISD
+    'portShape': {'val': 'rectangular', 'units': 'circular or rectangular'}, # circular or rectangular
+    'd_port': {'val': 0, 'units': 'cm diameter of port if circular', 'mult': 0.01}, # diameter of port if circular in cm converted to m
+    'a_port': {'val': 3.5, 'units': 'cm width of port if rectangular', 'mult': 0.01}, # width of port if rectangular
+    'b_port': {'val': 21.5, 'units': 'cm height of port of rectangular', 'mult': 0.01}, # height of port if rectangular
+    'endCorrect': {'val': 0.732}, # port end correction factor
 }
     
 async def main(page: ft.Page):
@@ -76,7 +76,7 @@ async def main(page: ft.Page):
             Znom = 8,
             Pin = 100, # input power used for calculations like cone excursion and port air speed
             V_box = 32*1e-3, # box volume, 32 l converted to m^3
-            ported = True,
+            n_ports = 1, # number of ports or 0 for sealed
             f_port = 40, # port tuning frequency in Hz
             Q_port = 50,
             portShape = 'rectangular', # circular or rectangular
@@ -109,11 +109,11 @@ async def main(page: ft.Page):
             print('style must be winISD or Francis')
         K_box = gamma*P_atm*S_d**2/V_box # Spring constant of box
             
-        if ported:
+        if n_ports == 0:
+            kappa = 1 # i.e., no port therefore no port correction
+        else:
             w_port = 2*np.pi*f_port # port resonant frequency in radians/s
             kappa = w**2/(w**2 - 1j*w*w_port/Q_port - w_port**2) # correction factor for box spring constant based on port behavior
-        else:
-            kappa = 1 # i.e., no port therefore no port correction
 
         Keff = K + kappa*K_box # total spring constant, from driver suspension plus port-corrected box
         
@@ -132,14 +132,14 @@ async def main(page: ft.Page):
         
         # More ported behavior
         
-        if ported:
+        if n_ports != 0:
             kappa2 = w_port**2/(w**2 - 1j*w*w_port/Q_port - w_port**2)
             
             if portShape == 'circular':
-                S_port = np.pi*d_port**2/4
+                S_port = n_ports*np.pi*d_port**2/4
                 Rport = d_port/2
             elif portShape == 'rectangular': 
-                S_port = a_port*b_port
+                S_port = n_ports*a_port*b_port
                 Rport = min(a_port, b_port)/2 # assume effective radius is the smaller of the two dimensions
                 initReport['d_port'] = np.sqrt(4*S_port/np.pi)
             else:
@@ -168,14 +168,15 @@ async def main(page: ft.Page):
         report['peak input voltage (V)'] = Vin
         report['cone radius (m)'] = r
         report['box spring constant (N/m)'] = K_box
-        report['Port angular frequency (1/s)'] = w_port
-        report['Port area (m^2)'] = S_port
-        report['Port effective radius (m)'] = Rport
-        report['Length of port (m)'] = lport
-        report['Length of port (in)'] = lport*39.3
-        report['Volume of port (l)'] = lport*S_port*1000
+        if n_ports != 0:
+            report['Port angular frequency (1/s)'] = w_port
+            report['Port area (m^2)'] = S_port
+            report['Port effective radius (m)'] = Rport
+            report['Length of port (m)'] = lport
+            report['Length of port (in)'] = lport*39.3
+            report['Volume of port (l)'] = lport*S_port*1000
             
-        return x, Z, spl, phase, v_port, p #, pd.DataFrame([[tag, report[tag]] for tag in report])
+        return x, Z, spl, phase, v_port, p, report #, pd.DataFrame([[tag, report[tag]] for tag in report])
 
     def graphs(ax, f, x, Z, spl, phase, v_port, label):
         '''
@@ -207,27 +208,53 @@ async def main(page: ft.Page):
         f_max = 1000
         f = np.logspace(np.log10(f_min), np.log10(f_max), 300) # a range of frequencies from 10 to 1000 Hz
         w = 2*np.pi*f
-        x, Z, spl, phase, v_port, p1 = xCone(w, **(name | driver | box), initReport = name | driver | box) 
+        x, Z, spl, phase, v_port, p1, report = xCone(w, **(name | driver | box), initReport = name | driver | box) 
         label = name['design']
         graphs(ax, f, x, Z, spl, phase, v_port, label)
+        return report
 
-    props = {'dense': True, 'content_padding': ft.padding.all(10)}
+    def textField(driver, key):
+        '''
+        Automatically assign type and create text field for item
+        '''
+        props = {'dense': True, 'content_padding': ft.padding.all(10)}
+        item = driver[key]
+        item['type'] = type(item['val'])
+        label = key
+        if 'units' in item:
+            label = label + ' (' + item['units'] + ')'
+        item['textfield'] = ft.TextField(label = label, value = item['val'], **props,)
+    
     driver = emi2512ii
-    driverControls = {key: ft.TextField(label = key, value = driver[key], **props) for key in driver}
-    driverTypes = {key: type(driver[key]) for key in driver}
+    for key in driver:
+        textField(driver, key)
     
     box = box1
-    boxControls = {key: ft.TextField(label = key, value = box[key], **props) for key in box}
-    boxTypes = {key: type(box[key]) for key in box}
+    for key in box:
+        textField(box, key)
 
     fig, axs = plt.subplots(4, 1, figsize = (10, 15))
 
     mpc = MatplotlibChart(fig, original_size=True)
 
+    def getValues(driver):
+        newDriver = {}
+        for key in driver:
+            item = driver[key]
+            val = item['type'](item['textfield'].value)
+            if 'mult' in item:
+                val = val*item['mult']
+            newDriver[key] = val
+        return newDriver
+
     def graph_update(e):
-        newDriver = {key: driverTypes[key](driverControls[key].value) for key in driverControls}
-        newBox = {key: boxTypes[key](boxControls[key].value) for key in boxControls}
-        runGraph(axs, {'design': '1x12 ported'}, newDriver, newBox)
+        newDriver = getValues(driver)
+        newBox = getValues(box)
+        print(newDriver, newBox)
+        report = runGraph(axs, {'design': '1x12 ported'}, newDriver, newBox)
+        s = '\n'.join([key + ': ' + str(report[key]) for key in report])
+        reportText.value = s
+        reportText.update()
         fig.canvas.draw()
         mpc.update()
 
@@ -235,12 +262,15 @@ async def main(page: ft.Page):
         [ax.clear() for ax in axs]
         graph_update(0)
 
-    [page.add(driverControls[key]) for key in driverControls]
-    [page.add(boxControls[key]) for key in boxControls]
+    page.add(ft.Text(value="Speaker modeling program", color="green"))
+    [page.add(driver[key]['textfield']) for key in driver]
+    [page.add(box[key]['textfield']) for key in box]
     page.add(ft.Row([ft.ElevatedButton("Update", on_click=graph_update),
-                    ft.ElevatedButton("Clear and update", on_click=clear_and_update)]))
-    
+                    ft.ElevatedButton("Clear and update", on_click=clear_and_update),
+                    ft.Text(value = "Report at bottom of page")]))
+    reportText = ft.TextField(min_lines = 5, max_lines = 20, multiline=True)
     page.add(mpc)
+    page.add(reportText)
     
     page.scroll = ft.ScrollMode.ADAPTIVE
 
