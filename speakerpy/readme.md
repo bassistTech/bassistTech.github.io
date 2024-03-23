@@ -6,9 +6,13 @@ Francis Deck, 3/15/2024
 
 This is a Web-based program for modeling sealed and ported loudspeakers using the basic electromechanical model described in my articles at this site.
 
-## Take me to the app
+It was an exercise to learn some new programming techniques, but it's offered here in case it might be useful.
 
-https://bassisttech.githug.io/speakerpy/build/web
+## Links
+
+Here's the app: [https://bassisttech.github.io/speakerpy/build/web](build/web/index.html)
+
+[Speaker theory article](https://github.com/bassistTech/SpeakerTheory/blob/master/SpeakerTheory.pdf)
 
 ## MIT License
 
@@ -22,16 +26,14 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 ## Motivation
 
-This program is offered in the spirit of a programming exercise that happens to be useful. I've been programming since 1981, and over the decades have spent some time keeping up with developments in languages and tools, through home projects like this one.
+This program is offered in the spirit of a programming exercise that happens to be useful. It's the result of looking for the easist possible way to create a Web app in Python.
 
-My latest interest is in the recent porting of the standard Python interpreter to Web Assembly, allowing Python programs to run in the browser. This has been combined with some other tools in the **flet** package to allow creation of graphical Web applications, or "web apps."
+I've always been interested in DIY music gear, including speakers. When web forums began to emerge for bassists, I noticed comments like "tens are fast and fifteens are deep, because physics." I immediately asked myself: "What physics?" and launched a project to find the actual physics underlying the behavior of speakers.
 
-Web apps have proven to be a way of developing apps that will run on any system that supports a modern browser. In a sense, *the browser is the new OS*. It solves the problem of trying to write an app that targets every platform: Windows, Mac, Linux, Chrome, Android, etc. 
+I'm a physicist, and don't have an engineering background, so my approach is noticeably physics-y. A scientist is constantly faced with the question: How do I know that I'm on the right track? How can I check this? Why should anybody believe it?
 
-So I took my existing speaker modeling code, converted it into a **flet** app, and am sharing it here. It follows my time-tested approach to GUI design, which is: *Ugly but functional*. I started with all of the layout defaults provided by the tool -- in this case **flet**, and added only enough modifications to make the resulting interface tolerable to use.
-
-As I learn more about creating robust and useful web apps, I'll test my learning by updating this program.
+These modeling programs are part of my approach, because I can use them to "connect" my equations with accepted software and my own measurements. I've checked the graphs produced by my program with one popular app, WinISD. The graphs match quite closely, if I account for a difference in how my program computes the input voltage. This agreement would be unliklely if there were an error in my assumptions or calculations. I've also built speakers and measured their response and impedance curves.
 
 ## Cautions
 
-I'm not an engineer, and this program has not been checked for correctness or accuracy. This is not engineering software. Before committing to building a speaker, I recommend getting expert advice, and checking my results against other software that's available.
+I'm not an engineer, and this program has not been checked by any third party for correctness or accuracy. Do not use this program for actual design purposes unless you check the results against other accepted software or formulas.

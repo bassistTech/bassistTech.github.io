@@ -1,8 +1,15 @@
 '''
+Speaker modeling program
+
+Francis Deck, 3/32/2024
+MIT License: https://opensource.org/license/mit'
+
 build command:
     flet build web
 to serve locally for testing:
     python -m http.server --directory build/web
+To serve online, change index.html in this way:
+    <base href="./">
 '''
 
 import flet as ft
@@ -60,7 +67,6 @@ def add_widgets(dict_in, key):
         item['widget'] = ft.TextField(label=label, 
                                       value=item['val'], 
                                       **props)
-        print(item['widget'].label_style)
 
 
 def get_values(dict_in):
@@ -109,9 +115,8 @@ async def main(page: ft.Page):
     def graph_update(e):
         newDriver = get_values(driver)
         newBox = get_values(box)
-        print(newBox)
         newSystem = get_values(system)
-        report = xcone.runGraph(axs, {'design': '1x12 ported'}, newDriver, newBox, newSystem)
+        report = xcone.runGraph(axs, newDriver | newBox | newSystem)
         s = '\n'.join([key + ': ' + str(report[key]) for key in report])
         reportText.value = s
         reportText.update()

@@ -1,5 +1,8 @@
 '''
 Cone response calculation and graphing utilities for speaker modeling program
+
+Francis Deck, 3/32/2024
+MIT License: https://opensource.org/license/mit'
 '''
 
 import numpy as np
@@ -136,38 +139,37 @@ def xCone(w, F_s, R_e, L_e, Q_ms, Q_es, Vas, Xmax, S_d, Znom,
         
     return x, Z, spl, phase, v_port, p, report
 
-def graphs(ax, f, x, Z, spl, phase, v_port, label):
+def graphs(ax, f, x, Z, spl, phase, v_port):
     '''
     Display the interesting graphs for the design.
     '''
-    ax[0].semilogx(f, np.abs(x)*1000, label = label)
+    ax[0].semilogx(f, np.abs(x)*1000)
     ax[0].set_ylabel('cone excursion amplitude (mm)')
     
-    ax[1].semilogx(f, np.abs(Z), label = label)
+    ax[1].semilogx(f, np.abs(Z))
     ax[1].set_ylabel('impedance ($\Omega$)')
 
-    ax[2].semilogx(f, spl, label = label)
+    ax[2].semilogx(f, spl)
     ax[2].set_ylabel('Sound pressure (dB SPL)')
 
     # ax[3].semilogx(f, phase, label = label)
     # ax[3].set_ylabel('Phase')
 
-    ax[3].semilogx(f, np.abs(v_port), label = label)
+    ax[3].semilogx(f, np.abs(v_port))
     ax[3].set_xlabel('frequency (Hz)')
     ax[3].set_ylabel('port air speed (' + airspeed_units + ')')
         
     for a in ax:
         a.set_xticks([10, 20, 40, 60, 100, 200, 400, 600])
         a.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-        # a.legend()
+        a.set_xlim(10, 500)
 
-def runGraph(ax, name, driver, box, system):
+def runGraph(ax, params):
     f_min = 10
     f_max = 500
     f = np.logspace(np.log10(f_min), np.log10(f_max), 300) # a range of frequencies from 10 to 1000 Hz
     w = 2*np.pi*f
-    x, Z, spl, phase, v_port, p1, report = xCone(w, **(name | driver | box | system), 
-                                                 initReport = name | driver | box | system) 
-    label = name['design']
-    graphs(ax, f, x, Z, spl, phase, v_port, label)
+    x, Z, spl, phase, v_port, p1, report = xCone(w, **params, 
+                                                 initReport = params) 
+    graphs(ax, f, x, Z, spl, phase, v_port)
     return report
