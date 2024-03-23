@@ -59,7 +59,7 @@ def xCone(w, F_s, R_e, L_e, Q_ms, Q_es, Vas, Xmax, S_d, Znom,
         kappa = 1 # i.e., no port therefore no port correction
     else:
         w_port = 2*np.pi*f_port # port resonant frequency in radians/s
-        kappa = w**2/(w**2 - 1j*w*w_port/Q_port - w_port**2) # correction factor for box spring constant based on port behavior
+        kappa = w**2/(w**2 - 1j*w*w_port/Q_port - w_port**2)
 
     Keff = K + kappa*K_box # total spring constant, from driver suspension plus port-corrected box
 
