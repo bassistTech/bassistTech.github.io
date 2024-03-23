@@ -2,7 +2,7 @@
 
 ## String Bass | Electric Bass
 
-![Picture of Francis](img/francisbw2.png)
+![](img/francisbw2.png)
 
 ### Are you looking for HPF-Pre? Click here: [https://sites.google.com/site/hpftechllc/](https://sites.google.com/site/hpftechllc/)
 
@@ -18,6 +18,8 @@ Related to music, I'm an electronics and audio hobbyist. As I accumulate results
 By day, I'm a senior staff scientist with Thermo Fisher Scientific Corp., the world leader in serving science. It's a great place to work. I have a PhD in physics, 20 patents, and extensive experience in development of optical and electronic instrumentation systems. Many of my projects involve combinations of optics, electronics, embedded systems, and software development.
 
 ## Blog, Articles, Projects
+
+**3/23/2024** [Online speaker modeling program (new)](speakerpy/index.html): A basic modeling program for sealed and ported loudspeakers based on the equations in my speaker theory article. I wrote this as an exercise to learn how to write Web apps in Python.
 
 **11/19/2023** [New! 8-inch bass speaker design](8-in-bass-speaker/index.html): I built this speaker just before the pandemic, and have used it form most of my gigs since then.
 
