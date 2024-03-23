@@ -2,7 +2,7 @@
 
 ## String Bass | Electric Bass
 
-![Picture of Francis'](img/francisbw2.png)
+![Picture of Francis](img/francisbw2.png)
 
 ### Are you looking for HPF-Pre? Click here: [https://sites.google.com/site/hpftechllc/](https://sites.google.com/site/hpftechllc/)
 
