@@ -159,14 +159,15 @@ def graphs(ax, f, x, Z, spl, phase, v_port, label):
     for a in ax:
         a.set_xticks([10, 20, 40, 60, 100, 200, 400, 600])
         a.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-        a.legend()
+        # a.legend()
 
-def runGraph(ax, name, driver, box):
+def runGraph(ax, name, driver, box, system):
     f_min = 10
     f_max = 500
     f = np.logspace(np.log10(f_min), np.log10(f_max), 300) # a range of frequencies from 10 to 1000 Hz
     w = 2*np.pi*f
-    x, Z, spl, phase, v_port, p1, report = xCone(w, **(name | driver | box), initReport = name | driver | box) 
+    x, Z, spl, phase, v_port, p1, report = xCone(w, **(name | driver | box | system), 
+                                                 initReport = name | driver | box | system) 
     label = name['design']
     graphs(ax, f, x, Z, spl, phase, v_port, label)
     return report
