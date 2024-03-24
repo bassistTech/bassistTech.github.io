@@ -139,12 +139,14 @@ def xCone(w, F_s, R_e, L_e, Q_ms, Q_es, Vas, Xmax, S_d, Znom,
         
     return x, Z, spl, phase, v_port, p, report
 
-def graphs(ax, f, x, Z, spl, phase, v_port):
+def graphs(ax, f, x, Z, spl, phase, v_port, Xmax):
     '''
     Display the interesting graphs for the design.
     '''
     ax[0].semilogx(f, np.abs(x)*1000)
+    ax[0].semilogx(f, np.zeros_like(f) + Xmax*1000, label = 'Xmax')
     ax[0].set_ylabel('cone excursion amplitude (mm)')
+    ax[0].legend()
     
     ax[1].semilogx(f, np.abs(Z))
     ax[1].set_ylabel('impedance ($\Omega$)')
@@ -171,5 +173,5 @@ def runGraph(ax, params):
     w = 2*np.pi*f
     x, Z, spl, phase, v_port, p1, report = xCone(w, **params, 
                                                  initReport = params) 
-    graphs(ax, f, x, Z, spl, phase, v_port)
+    graphs(ax, f, x, Z, spl, phase, v_port, params['Xmax'])
     return report

@@ -10,7 +10,9 @@ It was an exercise to learn some new programming techniques, but it's offered he
 
 ## Links
 
-Here's the app: [https://bassisttech.github.io/speakerpy/build/web](build/web/index.html)
+Here's the app. Note that it loads quite slowly. Especially if you're on a slow conection, give it a minute.
+
+[https://bassisttech.github.io/speakerpy/build/web](build/web/index.html)
 
 [Speaker theory article](https://github.com/bassistTech/SpeakerTheory/blob/master/SpeakerTheory.pdf)
 
