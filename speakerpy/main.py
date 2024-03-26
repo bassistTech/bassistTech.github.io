@@ -65,7 +65,8 @@ def add_widgets(dict_in):
             item['rg'] = ft.RadioGroup(content = ft.Row(item['radios']),
                                         value = item['radios'][0].value)
             item['widget'] = ft.Row([ft.Text(value = label, 
-                                            size = 12, color = 'black50'),
+                                            size = 12, 
+                                            color = 'black50'),
                                         item['rg']])
         else:
             item['widget'] = ft.TextField(label=label, 
@@ -181,13 +182,13 @@ async def main(page: ft.Page):
     page.add(
         ft.Row(
             [ft.Container(ft.Column(
-                [ft.Text(value = "Driver parameters", color = "black")]
+                [ft.Text(value = "Driver parameters")]
                 + [driver_gui[key]['widget'] for key in driver_gui]
-                + [ft.Text(value = 'System parameters', color = 'black')]
+                + [ft.Text(value = 'System parameters')]
                 + [system_gui[key]['widget'] for key in system_gui]),
                 width = 350),
             ft.Container(ft.Column(
-                [ft.Text(value = 'Box parameters', color = 'black')]
+                [ft.Text(value = 'Box parameters')]
                 + [box_gui[key]['widget'] for key in box_gui]), 
                 width = 350)],
             vertical_alignment = ft.CrossAxisAlignment.START))
