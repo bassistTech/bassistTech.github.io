@@ -10,11 +10,15 @@ It was an exercise to learn some new programming techniques, but it's offered he
 
 ## Links
 
-Here's the app. Note that it loads quite slowly. Especially if you're on a slow conection, give it a minute.
+The web app loads slowly, so give it a minute.
 
-[https://bassisttech.github.io/speakerpy/build/web](build/web/index.html)
+Here's the web app: [https://bassisttech.github.io/speakerpy/build/web](build/web/index.html)
 
-[Speaker theory article](https://github.com/bassistTech/SpeakerTheory/blob/master/SpeakerTheory.pdf)
+Here's the source code: [https://github.com/bassistTech/bassistTech.github.io/tree/main/speakerpy](https://github.com/bassistTech/bassistTech.github.io/tree/main/speakerpy)
+
+The speaker theory article is a PDF. It's easier to read if you download it and read it offline.
+
+Here's the speaker theory article: [https://github.com/bassistTech/SpeakerTheory/blob/master/SpeakerTheory.pdf](https://github.com/bassistTech/SpeakerTheory/blob/master/SpeakerTheory.pdf)
 
 ## MIT License
 
@@ -25,6 +29,20 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Minimal instructions
+
+The program uses the bare minimum number of Thiele-Small parameters that are needed for the basic electromechanical model. These have to be in the units shown in the program, all metric. Very few if any credible driver makers still use US units. If the maker doesn't offer parameters, it's because they might not know what they are.
+
+**How do I load and save designs**? When you update the graphs, the design parameters are loaded into a text box at the bottom of the page. You can copy them into a text editor and save them. Then you can paste a set of parameters back in there and click on "load design parameters from below." Hopefully you will be successful.
+
+I prefer text based file formats for my programs, because there's nothing hidden. Likewise with my source code. My intention here is that everything is open, all the way down to the underlying theory.
+
+Goodies like file storage and error checking are more than I've had a chance to work on, and raise the complexity of an app exponentially. This is a big part of the reason why software is costly to develop. Also, your browser deliberately limits the ability of my program to access the files in your computer, for security reasons. I also feel more comfortable knowing that my program can't do any serious damage. It makes sharing simple apps a lot easier.
+
+**Do I trust the port length calculations**? No. These are straight from my formulas, and I've checked them against formulas published online. But figuring out the effect of the port ends is tricky when big ports are crammed into small boxes, as is common with musical instrument speakers. Don't leave yourself with no way to change the port length after you've built the box and measured its tuning.
+
+**Do I trust anything**? No. Before you commit to buying drivers and cutting plywood, it would be a very good idea to get a second opinion from another program. Also, there are some smart people on the Talkbass forum who will critique your design if you post about it there.
 
 ## Motivation
 
