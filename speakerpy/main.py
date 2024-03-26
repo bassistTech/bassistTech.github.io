@@ -65,7 +65,7 @@ def add_widgets(dict_in):
             item['rg'] = ft.RadioGroup(content = ft.Row(item['radios']),
                                         value = item['radios'][0].value)
             item['widget'] = ft.Row([ft.Text(value = label, 
-                                            size = 12),
+                                            size = 12, color = 'black50'),
                                         item['rg']])
         else:
             item['widget'] = ft.TextField(label=label, 
