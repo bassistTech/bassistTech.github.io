@@ -217,12 +217,12 @@ async def main(page: ft.Page):
     
     page.add(ft.Row([mpc]))
 
-    page.add(ft.Text(value = 'Modeling report', color = 'black'))
+    page.add(ft.Text(value = 'Modeling report', color = 'black50'))
     reportText = ft.TextField(min_lines=5, max_lines=20, multiline=True)
     page.add(reportText)
 
     page.add(ft.Text(value = 'Design parameters. You can save these in a text file.', 
-                     color = 'black'))
+                     color = 'black50'))
     designText = ft.TextField(min_lines = 5, max_lines = 20, multiline = True)
     page.add(designText)
 
