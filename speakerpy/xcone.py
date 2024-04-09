@@ -157,9 +157,10 @@ def graphs(ax, f, x, Z, spl, phase, v_port, Xmax):
     # ax[3].semilogx(f, phase, label = label)
     # ax[3].set_ylabel('Phase')
 
-    ax[3].semilogx(f, np.abs(v_port))
-    ax[3].set_xlabel('frequency (Hz)')
-    ax[3].set_ylabel('port air speed (' + airspeed_units + ')')
+    if v_port is not None:
+        ax[3].semilogx(f, np.abs(v_port))
+        ax[3].set_xlabel('frequency (Hz)')
+        ax[3].set_ylabel('port air speed (' + airspeed_units + ')')
         
     for a in ax:
         a.set_xticks([10, 20, 40, 60, 100, 200, 400, 600])
