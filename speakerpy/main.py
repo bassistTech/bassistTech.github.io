@@ -15,31 +15,31 @@ To serve online, change index.html in this way:
 import flet as ft
 
 driver_defaults = {  # Eminence DeltaLite 2512-ii
-    'F_s': {'val': 37, 'units': 'Hz'}, 
+    'F_s': {'val': 37.0, 'units': 'Hz'}, 
     'R_e': {'val': 5.04, 'units': 'Ohms'},
     'L_e': {'val': 0.46, 'units': 'mH', 'mult': 0.001},
     'Q_ms': {'val': 3.13},
     'Q_es': {'val': 0.44},
-    'Vas': {'val': 147, 'units': 'liters', 'mult': 0.001},
+    'Vas': {'val': 147.0, 'units': 'liters', 'mult': 0.001},
     'Xmax': {'val': 4.90, 'units': 'mm', 'mult': 0.001},
     'S_d': {'val': 519.5, 'units': 'cm^2', 'mult': 1e-4},
 }
 
 box_defaults = {  # My little 12" box
-    'V_box': {'val': 32, 'units': 'liters', 'mult': 1e-3},
+    'V_box': {'val': 32.0, 'units': 'liters', 'mult': 1e-3},
     'n_ports': {'val': 1, 'units': 'number of ports or 0 for sealed'},
-    'f_port': {'val': 40, 'units': 'Hz'},
-    'Q_port': {'val': 50},
+    'f_port': {'val': 40.0, 'units': 'Hz'},
+    'Q_port': {'val': 50.0},
     'portShape': {'val': ['rectangular', 'circular']},
-    'd_port': {'val': 0, 'units': 'cm diameter of port if circular', 'mult': 0.01},
+    'd_port': {'val': 0.0, 'units': 'cm diameter of port if circular', 'mult': 0.01},
     'a_port': {'val': 3.5, 'units': 'cm width of port if rectangular', 'mult': 0.01},
     'b_port': {'val': 21.5, 'units': 'cm height of port of rectangular', 'mult': 0.01},
     'endCorrect': {'val': 0.732},
 }
 
 system_defaults = {
-    'Znom': {'val': 8, 'units': 'Ohms'},
-    'Pin': {'val': 100, 'units': 'W rms'},
+    'Znom': {'val': 8.0, 'units': 'Ohms'},
+    'Pin': {'val': 100.0, 'units': 'W rms'},
     }
 
 
