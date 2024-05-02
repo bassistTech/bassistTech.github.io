@@ -51,6 +51,9 @@ def xCone(w, F_s, R_e, L_e, Q_ms, Q_es, Vas, Xmax, S_d, Znom,
         print('style must be winISD or Francis')
     K_box = gamma*P_atm*S_d**2/V_box # Spring constant of box
 
+    Q_ts = 1/(1/Q_es + 1/Q_ms)
+    Q_tc = Q_ts*np.sqrt(1 + Vas/V_box)
+
     '''
     Port correction factors, described in my article
     '''
@@ -129,6 +132,8 @@ def xCone(w, F_s, R_e, L_e, Q_ms, Q_es, Vas, Xmax, S_d, Znom,
     report['peak input voltage (V)'] = Vin
     report['cone radius (m)'] = r
     report['box spring constant (N/m)'] = K_box
+    report['Qts'] = Q_ts
+    report['Qtc'] = Q_tc
     if n_ports != 0:
         report['Port angular frequency (1/s)'] = w_port
         report['Port area (m^2)'] = S_port
