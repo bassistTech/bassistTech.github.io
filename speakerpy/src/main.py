@@ -5,6 +5,8 @@ Francis Deck, 3/32/2024
 Updated 3/31/2024
 MIT License: https://opensource.org/license/mit'
 
+To run locally without a server:
+    flet run
 build command:
     flet build web
 to serve locally for testing:
@@ -21,6 +23,18 @@ from flet.matplotlib_chart import MatplotlibChart
 matplotlib.use("svg")
 
 import xcone
+
+'''
+Many of my programs consist of "a whole bunch of parameters, and some graphs."
+Programming individual widgets for each parameter is tedious, so I've explored
+a variety of ways to turn a dictionary of parameters into a GUI.
+
+Breaking things up in this way lets me pay attention to the GUI, and impose
+consistent formatting and behavior to the widgets. Also, once I'm done with the
+ugliness of writing GUI code, I never have to look at it again.
+
+Finding all of these Flet functions was just a matter of searching the docs.
+'''
 
 driver_defaults = {  # Eminence DeltaLite 2512-ii
     'F_s': {'val': 37.0, 'units': 'Hz'}, 
@@ -147,6 +161,9 @@ def graph_update(xcone, dumps,
     mpc.update()
 
 async def main(page: ft.Page):
+    '''
+    Flet requires the main function to be async
+    '''
     driver_gui = add_widgets(driver_defaults)
     box_gui = add_widgets(box_defaults)
     system_gui = add_widgets(system_defaults)
