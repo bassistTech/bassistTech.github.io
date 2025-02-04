@@ -7,17 +7,19 @@
 ### Are you looking for HPF-Pre? Click here: [https://sites.google.com/site/hpftechllc/](https://sites.google.com/site/hpftechllc/)
 
 ## Music
-Thanks for visiting my page. If you're looking for a versatile upright or electric bassist you've come to the right place! My experience includes three decades of freelance jazz gigs, symphonic and chamber groups, pit orchestras, ethnic dance bands, and so forth. I offer a complete range of skills, including fluent sight-reading, improvisation, knowledge of the standard jazz repertoire, and simply being easy to deal with.
+Thanks for visiting my page. If you're looking for a versatile upright or electric bassist you've come to the right place! My experience includes more than three decades of freelance jazz gigs, symphonic and chamber groups, pit orchestras, ethnic dance bands, and so forth. I offer a complete range of skills, including fluent sight-reading, improvisation, knowledge of the standard jazz repertoire, and simply being easy to deal with.
 
-I moved to Madison in 1997, and have played with numerous local groups, on a regular or freelance basis. Presently, I play with the Madison Jazz Orchestra, Inside Pocket, Swingtime Music.
+I moved to Madison in 1997, and have played with numerous local groups, on a regular or freelance basis. Presently, I play with the Madison Jazz Orchestra, Inside Pocket, and Swingtime Music.
 
 ## Electronics and Speakers
 Related to music, I'm an electronics and audio hobbyist. As I accumulate results, if they're interesting, then I write them up to share. Often, I find that writing a brief report helps me critique my own ideas, and also attracts helpful comments that improve my knowledge.
 
 ## Professional
-By day, I'm a senior staff scientist with Thermo Fisher Scientific Corp., the world leader in serving science. It's a great place to work. I have a PhD in physics, 20 patents, and extensive experience in development of optical and electronic instrumentation systems. Many of my projects involve combinations of optics, electronics, embedded systems, and software development.
+By day, I'm a senior staff scientist with Thermo Fisher Scientific Corp., the world leader in serving science. It's a great place to work. I have a PhD in physics, 20+ patents, and extensive experience in development of optical and electronic instrumentation systems. Many of my projects involve combinations of optics, electronics, embedded systems, and software development.
 
 ## Blog, Articles, Projects
+
+**12/25/2024** [Speaker Theory (GitHub repo)](https://github.com/bassistTech/SpeakerTheory): I've re-written my derivation of the speaker response formulas using **SymPy**, the symbolic algebra package for Python. It doesn't change any of my results or programs, but is less error prone and more maintainable than writing derivations by hand and typing them in to the Markdown editor. Also, the symbolic and numerical calculations are tied together, avoiding the problem of "two sets of books."
 
 **3/23/2024** [Online speaker modeling program (new)](speakerpy/index.html): A basic modeling program for sealed and ported loudspeakers based on the equations in my speaker theory article. I wrote this as an exercise to learn how to write Web apps in Python.
 
@@ -46,3 +48,7 @@ Admittedly, it's not very readable. I need to go back and improve it! If you jus
 [Online speaker modeling program (new)](speakerpy/index.html): A basic modeling program for sealed and ported loudspeakers based on the equations in my speaker theory article. I wrote this as an exercise to learn how to write Web apps in Python.
 
 [Online speaker modeling program (older)](speakerjs/speaker.html): Javascript version of above. I made a pretty good effort to keep it up to date, but the Python code is a lot easier to maintain.
+
+# People who visited this site also enjoyed...
+
+Taking a nap.

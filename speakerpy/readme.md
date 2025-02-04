@@ -2,6 +2,8 @@
 
 Francis Deck, 3/15/2024
 
+Update 2/3/2025
+
 ## Overview
 
 This is a Web-based program for modeling sealed and ported loudspeakers using the basic electromechanical model described in my articles at this site.
@@ -57,3 +59,7 @@ These modeling programs are part of my approach, because I can use them to "conn
 ## Cautions
 
 I'm not an engineer, and this program has not been checked by any third party for correctness or accuracy. Do not use this program for actual design purposes unless you check the results against other accepted software or formulas.
+
+## Update history
+
+**2/3/2025** No functional changes. I updated the program so it works with the latest version of **flet** which is still in development.
