@@ -9,7 +9,7 @@
 ## Music
 Thanks for visiting my page. If you're looking for a versatile upright or electric bassist you've come to the right place! My experience includes more than three decades of freelance jazz gigs, symphonic and chamber groups, pit orchestras, ethnic dance bands, and so forth. I offer a complete range of skills, including fluent sight-reading, improvisation, knowledge of the standard jazz repertoire, and simply being easy to deal with.
 
-I moved to Madison in 1997, and have played with numerous local groups, on a regular or freelance basis. Presently, I play with the Madison Jazz Orchestra, Inside Pocket, and Swingtime Music.
+I moved to Madison in 1997, and have played with numerous local groups, on a regular or freelance basis. Presently, I play with the Madison Jazz Orchestra, Inside Pocket, Soul Call, and Swingtime Music.
 
 ## Electronics and Speakers
 Related to music, I'm an electronics and audio hobbyist. As I accumulate results, if they're interesting, then I write them up to share. Often, I find that writing a brief report helps me critique my own ideas, and also attracts helpful comments that improve my knowledge.
@@ -17,11 +17,11 @@ Related to music, I'm an electronics and audio hobbyist. As I accumulate results
 ## Professional
 By day, I'm a senior staff scientist with Thermo Fisher Scientific Corp., the world leader in serving science. It's a great place to work. I have a PhD in physics, 20+ patents, and extensive experience in development of optical and electronic instrumentation systems. Many of my projects involve combinations of optics, electronics, embedded systems, and software development.
 
-## Blog, Articles, Projects
+## Blogs, Articles, Projects
+
+**3/13/2026** [Online speaker modeling program (updated)](speakerjs/speaker.html): This is a basic speaker modeling program that started as an exercise to learn Javascript. It has proven a lot easier to maintain than the later Python version, so I'm going to keep it up to date from now on. This version reconciles the math formulas with my latest derivations in the speaker theory repo.
 
 **12/25/2024** [Speaker Theory (GitHub repo)](https://github.com/bassistTech/SpeakerTheory): I've re-written my derivation of the speaker response formulas using **SymPy**, the symbolic algebra package for Python. It doesn't change any of my results or programs, but is less error prone and more maintainable than writing derivations by hand and typing them in to the Markdown editor. Also, the symbolic and numerical calculations are tied together, avoiding the problem of "two sets of books."
-
-**3/23/2024** [Online speaker modeling program (new)](speakerpy/index.html): A basic modeling program for sealed and ported loudspeakers based on the equations in my speaker theory article. I wrote this as an exercise to learn how to write Web apps in Python.
 
 **11/19/2023** [New! 8-inch bass speaker design](8-in-bass-speaker/index.html): I built this speaker just before the pandemic, and have used it form most of my gigs since then.
 
@@ -45,9 +45,9 @@ Admittedly, it's not very readable. I need to go back and improve it! If you jus
 
 [JFET bass preamp](JFET-bass-preamp/index.html): A complete bass preamp using discrete JFET circuitry: Gain, bass, treble, mid with variable center frequency, and volume.
 
-[Online speaker modeling program (new)](speakerpy/index.html): A basic modeling program for sealed and ported loudspeakers based on the equations in my speaker theory article. I wrote this as an exercise to learn how to write Web apps in Python.
+## This site
 
-[Online speaker modeling program (older)](speakerjs/speaker.html): Javascript version of above. I made a pretty good effort to keep it up to date, but the Python code is a lot easier to maintain.
+This site is mostly written in Markdown and Jupyter notebooks, then converted automatically to HTML for ease of browsing. Thanks to Github for hosting this.
 
 # People who visited this site also enjoyed...
 

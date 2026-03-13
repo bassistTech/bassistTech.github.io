@@ -1,31 +1,34 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <script language="javascript" type="text/javascript" src="flot/jquery.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Width Example</title>
+    <style>
+        .container {
+            max-width: 900px; /* Sets the maximum width of the container */
+            width: 100%;      /* Ensures it is responsive and can be smaller than 900px */
+            margin: 0 auto;   /* Centers the container on the page */
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+    </style>
+	<script language="javascript" type="text/javascript" src="flot/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
 </head>
+<body>
+  <div class="container">
 
 <body>
     <h1>Speaker Modeling Program</h1>
-	Revision date: December 18, 2023<br>
+	Revision date: March 11, 2026<br>
 	<br>
-	This is a proof-of-concept that I wrote to teach myself JavaScript. It's not intended for 
-	serious design work. However, it uses the basic speaker modeling formulas that I've derived
-	and tested in other programs.<br><br>
-	
-	You need to turn on JavaScript in your browser to see anything here. If you're paranoid, 
-	you can look at the page source to make sure that everything is tame before turning on JavaScript. 
-	This program uses Flot, an open source plotting library for JavaScript. You can find out more 
-	at: <a href = "http://www.flotcharts.org/">www.flotcharts.org</a>. I'm using Flot in its entirety with no changes.<br><br>
-	<h2>How did you get here?</h2>
-	<OL>
-		<LI>You entered a short URL (no parameters such as Fs, etc.) or clicked on a link. This means you're 
-		looking at the defaults for	the program, my little Eminence 2512-ii box. You can enter your own 
-		Thiele-Small and box parameters, and start modeling right away.
-		<LI>You entered a long URL (lots of parameters) or clicked on such a link. This means you're looking
-		at a driver model or box design that somebody has shared (or are using one of my library drivers).
-		You can look at the model or change it and see what happens.
-	</OL>
-	A quick note about the P<sub>e</sub> parameter. <i>The program doesn't use it</i>. Instead, the program uses the Amplifier Power parameter for the excursion and port air speed graphs. This lets you figure out how your speaker will perform for your amplifier.
+	This is a simple modeling program for basic sealed and ported speakers. It uses the formulas
+	that I derived in my speaker theory notebooks.<br>
+	<br>
+	A quick note about the P<sub>e</sub> parameter. <i>The program doesn't use it</i>. 
+	Instead, the program uses the Amplifier Power parameter for the excursion and port air speed graphs. 
+	This lets you figure out how your speaker will perform for your amplifier.
 	<h2>Site Map</h2>
 	<UL>
 		<LI><a href="misc.html#dlibrary">Driver Library</a>
@@ -87,11 +90,11 @@
 				formheader('Driver Parameters')
 				formparama('Driver name', 'Dname', 'Eminence 2512-ii', '')
 				formparama('F<sub>s</sub>', 'Fs', '37', 'Hz')
-				formparama('R<sub>e</sub>', 'Re', '5.04', 'Ohms')
+				formparama('R<sub>e</sub>', 'R_e', '5.04', 'Ohms')
 				formparama('Q<sub>es</sub>', 'Qes', '0.44', '')
 				formparama('Q<sub>ms</sub>', 'Qms', '3.13', '')
 				formparama('V<sub>as</sub>', 'Vas', '147', 'Liters')
-				formparama('S<sub>d</sub>', 'Sd', '519.5', 'cm<sup>2</sup>')
+				formparama('S<sub>d</sub>', 'Sd_cm2', '519.5', 'cm<sup>2</sup>')
 				formparama('X<sub>max</sub>', 'Xmax', '4.9', 'mm')
 				formparama('L<sub>e</sub>', 'Le', '0.46', 'mH')
 				formparama('Z<sub>nom</sub>', 'Znom', '8', 'Ohms')
@@ -125,8 +128,13 @@
     <h2>Reported Data</h2>
 	<form name="after">
 		<textarea cols="80" rows="20" name="output">Reported data</textarea><br><br>
-		URL for this speaker. The following URL will reproduce your design. You can send this URL
-		to a friend or save it in a file as way to "save" your design.<br><br>
+		<h3>How do I save or share my design?</h3>
+		It's right here. Your entire design is encoded in this URL. It will reproduce your design if you 
+		enter it into your browser. You can send this URL
+		to a friend or save it in a file as way to "save" your design. <i>This works without
+			sharing any information with me. My web page does not gather or store your information.
+			I don't want it.
+		</i><br><br>
 		<textarea cols="80" rows="10" name="url">URL</textarea><br><br>
 		Raw data, use for your enjoyment.<br><br>
 		<textarea cols="80" rows="10" name="rawdata">raw data</textarea><br><br>
@@ -187,11 +195,11 @@
 		dprint('Input parameters in user units', '')
 		dprints('Dname')
 		Fs = dprinty('Fs')
-		Re = dprinty('Re')
+		R_e = dprinty('R_e')
 		Qes = dprinty('Qes')
 		Qms = dprinty('Qms')
 		Vas_liters = dprinty('Vas')
-		Sd_cm2 = dprinty('Sd')
+		Sd_cm2 = dprinty('Sd_cm2')
 		Xmax_mm = dprinty('Xmax')
 		Le_mH = dprinty('Le')
 		Znom = dprinty('Znom')
@@ -209,10 +217,10 @@
 		dprint('Parameters in SI units', '')
 
 		Vas = dprint("Vas = ", Vas_liters*0.001)
-		Sd = dprint("Sd = ", Sd_cm2*0.0001)
+		S_d = dprint("S_d = ", Sd_cm2*0.0001)
 		Xmax = dprint("Xmax = ", Xmax_mm*0.001)
-		Le = dprint("Le = ", Le_mH*0.001)
-		Vbox = dprint("Vbox = ", V_liters*0.001)
+		L_e = dprint("L_e = ", Le_mH*0.001)
+		V_box = dprint("V_box = ", V_liters*0.001)
 		Aport = dprint("Aport = ", Aport_cm*0.01)
 		Bport = dprint("Bport = ", Bport_cm*0.01)
 		Sport = dprint("Sport = ", Aport*Bport*nPorts)
@@ -223,17 +231,17 @@
 		dprint ('Computed electromechanical parameters in SI units', '')
 
 		ws = dprint("ws, Fs in angular units = ", Fs*2*Math.PI)
-		wport = dprint("wport, Fport in angular units = ", Fport*2*Math.PI)
-		wp2 = dprint("wport^2 = ", Math.pow(wport,2))
-		Km = dprint("Km, spring constant of driver in N/m = ", bpatm*Math.pow(Sd,2)/Vas)
-		Rm = dprint("Rm, mechanical damping factor of driver in N s/m = ", Km/Qms/ws)
-		Mm = dprint("Mm, mass of driver in kg = ", Km/Math.pow(ws,2))
-		BL = dprint("BL, field-length product in Telsa = ", Math.sqrt(Re*Km/Qes/ws))
-		Kbox = dprint("Kbox, spring constant of cone pushing box air in N/m = ", Math.pow(Sd,2)*bpatm*Ndrivers/Vbox)
+		w_port = dprint("w_port, Fport in angular units = ", Fport*2*Math.PI)
+		wp2 = dprint("w_port^2 = ", Math.pow(w_port,2))
+		Km = dprint("Km, spring constant of driver in N/m = ", bpatm*Math.pow(S_d,2)/Vas)
+		R_ms = dprint("R_ms, mechanical damping factor of driver in N s/m = ", Km/Qms/ws)
+		M_ms = dprint("M_ms, mass of driver in kg = ", Km/Math.pow(ws,2))
+		Bl = dprint("Bl, field-length product in Telsa = ", Math.sqrt(R_e*Km/Qes/ws))
+		Kbox = dprint("Kbox, spring constant of cone pushing box air in N/m = ", Math.pow(S_d,2)*bpatm*Ndrivers/V_box)
 		VinSens = dprint("VinSens, input voltage amplitude for sensitivity graph in V = ", Math.sqrt(PinSens/Ndrivers*Znom))
 		VinExc = dprint("VinExc, input voltage amplitude for excursion graph in V = ", Math.sqrt(2*PinExc/Ndrivers*Znom))
-		BL2 = dprint("BL^2, square of BL = ", Math.pow(BL,2))
-		lport = dprint("lport, length of port in m = ", Sport*bpatm/rho/Vbox/wp2 - Rport*2*endCorrect)
+		Bl2 = dprint("Bl^2, square of Bl = ", Math.pow(Bl,2))
+		lport = dprint("lport, length of port in m = ", Sport*bpatm/rho/V_box/wp2 - Rport*2*endCorrect)
 		Lport_cm = dprint("lport, length of port in cm = ", lport*100)
 	}
 
@@ -245,31 +253,30 @@
 		
 		w = f*2*Math.PI;
 		
-		// handle special case if w = wport, to avoid zero divide
+		// handle special case if w = w_port, to avoid zero divide
 		
-		if (Math.abs(w - wport) < 0.001) 
+		if (Math.abs(w - w_port) < 0.001) 
 		{
 			w = w + 0.0001;
 		}
+
+		///////////////////////// Computer generated code here /////////////////
+
+		// To reduce the chance of math errors, and ease my effort at keeping this program up to date,
+		// I've used Sympy within a Jupyter notebook to derive and generate these formulas. They were
+		// printed out within Jupyter using a function that generates Javascript syntax automatically.
+
+		C_eff = V_box*(Math.pow(w, 2) - Math.pow(w_port, 2))/(Math.pow(S_d, 2)*Math.pow(c, 2)*Math.pow(w, 2)*rho);
+		xre =  Bl*C_eff*(-1.0*C_eff*L_e*R_ms*Math.pow(w, 2) - C_eff*M_ms*R_e*Math.pow(w, 2) + R_e)/(Math.pow(Bl, 4)*Math.pow(C_eff, 2)*Math.pow(w, 2) - 2.0*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*L_e*M_ms*Math.pow(w, 4) + 2*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*R_e*R_ms*Math.pow(w, 2) + 2.0*Math.pow(Bl, 2)*C_eff*L_e*Math.pow(w, 2) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(M_ms, 2)*Math.pow(w, 6) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(M_ms, 2)*Math.pow(R_e, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(R_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 2) - 2.0*C_eff*Math.pow(L_e, 2)*M_ms*Math.pow(w, 4) - 2*C_eff*M_ms*Math.pow(R_e, 2)*Math.pow(w, 2) + 1.0*Math.pow(L_e, 2)*Math.pow(w, 2) + Math.pow(R_e, 2))
+		xim =  Bl*C_eff*w*(-Math.pow(Bl, 2)*C_eff + 1.0*C_eff*L_e*M_ms*Math.pow(w, 2) - C_eff*R_e*R_ms - 1.0*L_e)/(Math.pow(Bl, 4)*Math.pow(C_eff, 2)*Math.pow(w, 2) - 2.0*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*L_e*M_ms*Math.pow(w, 4) + 2*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*R_e*R_ms*Math.pow(w, 2) + 2.0*Math.pow(Bl, 2)*C_eff*L_e*Math.pow(w, 2) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(M_ms, 2)*Math.pow(w, 6) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(M_ms, 2)*Math.pow(R_e, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(R_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 2) - 2.0*C_eff*Math.pow(L_e, 2)*M_ms*Math.pow(w, 4) - 2*C_eff*M_ms*Math.pow(R_e, 2)*Math.pow(w, 2) + 1.0*Math.pow(L_e, 2)*Math.pow(w, 2) + Math.pow(R_e, 2));
+
+		//////////////////////// End of computer generated code ////////////// 
+
 		w2 = Math.pow(w,2);
 		
 		// port factor
 		
-		pf = w2/(w2 - wp2);
-		
-		// real part of excursion, generated by computer algebra program
-		
-		xre = (-Re*(Mm*w2-Kbox*pf-Km)-Le*Rm*w2)*BL
-			/(Math.pow(w*BL2-Le*w*(Mm*w2-Kbox*pf-Km)+Re*Rm*w,2)
-			+Math.pow(-Re*(Mm*w2-Kbox*pf-Km)-Le*Rm*w2,2));
-			
-		// imaginary part of excursion, generated by computer algebra program
-		
-		xim = BL*(-w*BL2+Le*w*(Mm*w2-Kbox*pf-Km)-Re*Rm*w)
-			/(Math.pow(w*BL2-Le*w*(Mm*w2-Kbox*pf-Km)+Re*Rm*w,2)
-			+Math.pow(-Re*(Mm*w2-Kbox*pf-Km)-Le*Rm*w2,2));
-			
-		// absolute value of excursion
+		pf = w2/(w2 - wp2)
 		
 		xabs = Math.sqrt(Math.pow(xre,2) + Math.pow(xim,2));
 		
@@ -280,14 +287,14 @@
 		// compute port air speed
 		
 		fp = w2/wp2 - 1;
-		speed = Math.abs(w*xabs*VinExc*Sd*Ndrivers/Sport/fp/c);
+		speed = Math.abs(w*xabs*VinExc*S_d*Ndrivers/Sport/fp/c);
 		
 		// compute SPL
 		
-		P1 = 20*Math.log(xabs*Math.abs(VinSens*w2*rho*Sd*
+		P1 = 20*Math.log(xabs*Math.abs(VinSens*w2*rho*S_d*
 			Ndrivers*pf/2/Dist/Math.PI/splref))/Math.log(10);
 			
-		P2 = 20*Math.log(xabs*Math.abs(VinExc*w2*rho*Sd*
+		P2 = 20*Math.log(xabs*Math.abs(VinExc*w2*rho*S_d*
 			Ndrivers*pf/2/Dist/Math.PI/splref))/Math.log(10);
 			
 		return [xExc, speed, P1, P2];
@@ -339,11 +346,13 @@
 				[{label: "Peak @ " + PinExc + " W", data: d1},
 				{label: "Waveform based @ " + PinExc + " W", data: d2},
 				{label: "Xmax", data: d3}],
+				{grid: {backgroundColor: "white"}},
 				{xaxis: xa});
 			
 			$.plot($("#sensitivity"), 
 				[{label: "1 W", data: s1},
 				{label: PinExc + " W", data: s2}],
+				{grid: {backgroundColor: "white"}},
 				{xaxis: xa});
 				
 			$.plot($("#mach"), 
@@ -352,6 +361,7 @@
 					// Decided that waveform based port air speed isn't useful
 					// {label: "Waveform based @ " + PinExc + " W", data: m2}
 				],
+				{grid: {backgroundColor: "white"}},
 				{xaxis: xa});
 		}
 		
@@ -367,7 +377,7 @@
 	});
 </script>
 <a name="disclaimer"></a><h2>Disclaimer</h2>
-Copyright (c) 2014 Francis Deck<br><br>
+Copyright (c) 2014-2026 Francis Deck<br><br>
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -389,5 +399,6 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
+</div>
 </body>
 </html>
