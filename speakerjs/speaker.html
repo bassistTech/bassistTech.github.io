@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Width Example</title>
+    <title>Basic speaker modeling program</title>
     <style>
         .container {
             max-width: 900px; /* Sets the maximum width of the container */
@@ -14,12 +14,17 @@
         }
     </style>
 	<script language="javascript" type="text/javascript" src="flot/jquery.js"></script>
-    <script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
+  	<!--script language="javascript" type="text/javascript" src="flot/jquery.canvaswrapper.js"></script-->
+	<!--script language="javascript" type="text/javascript" src="flot/jquery.colorhelpers.js"></script-->
+	<script language="javascript" type="text/javascript" src="flot/jquery.flot.js"></script>
+	<!--script language="javascript" type="text/javascript" src="flot/jquery.flot.saturated.js"></script-->
+	<!--script language="javascript" type="text/javascript" src="flot/jquery.flot.browser.js"></script-->
+	<!--script language="javascript" type="text/javascript" src="flot/jquery.flot.drawSeries.js"></script-->
+	<!--script language="javascript" type="text/javascript" src="flot/jquery.flot.uiConstants.js"></script-->
+	<!--script language="javascript" type="text/javascript" src="flot/jquery.flot.logaxis.js"></script-->
 </head>
 <body>
   <div class="container">
-
-<body>
     <h1>Speaker Modeling Program</h1>
 	Revision date: March 11, 2026<br>
 	<br>
@@ -89,14 +94,14 @@
 				
 				formheader('Driver Parameters')
 				formparama('Driver name', 'Dname', 'Eminence 2512-ii', '')
-				formparama('F<sub>s</sub>', 'Fs', '37', 'Hz')
-				formparama('R<sub>e</sub>', 'R_e', '5.04', 'Ohms')
-				formparama('Q<sub>es</sub>', 'Qes', '0.44', '')
-				formparama('Q<sub>ms</sub>', 'Qms', '3.13', '')
-				formparama('V<sub>as</sub>', 'Vas', '147', 'Liters')
+				formparama('F<sub>s</sub>', 'Fs', '53.1', 'Hz')
+				formparama('R<sub>e</sub>', 'R_e', '5.28', 'Ohms')
+				formparama('Q<sub>es</sub>', 'Qes', '0.64', '')
+				formparama('Q<sub>ms</sub>', 'Qms', '2.94', '')
+				formparama('V<sub>as</sub>', 'Vas', '67.44', 'Liters')
 				formparama('S<sub>d</sub>', 'Sd_cm2', '519.5', 'cm<sup>2</sup>')
 				formparama('X<sub>max</sub>', 'Xmax', '4.9', 'mm')
-				formparama('L<sub>e</sub>', 'Le', '0.46', 'mH')
+				formparama('L<sub>e</sub>', 'Le', '0.31', 'mH')
 				formparama('Z<sub>nom</sub>', 'Znom', '8', 'Ohms')
 				formparama('P<sub>e</sub>', 'Pe', '250', 'Watts')
 				formheader('Box Parameters')
@@ -108,21 +113,35 @@
 				formparama('Port height', 'Bport', '3.5', 'cm')
 				formparama('Number of ports', 'nPorts', '1', '')
 				formparama('Port end correction', 'endCorrect', '0.732', '')
-				formparama('Amplifier power', 'PinExc', '150', 'Watts')
+				formparama('Amplifier power', 'PinExc', '100', 'Watts')
+				formheader('Simulation control')
+				formparama('Starting frequency', 'fmin', 10, 'Hz')
+				formparama('Ending frequency', 'fmax', 1000, 'Hz')
 			</script>
 		</table>
 		<p class="stackControls">
 			<input type="button" value="Re-generate Graphs">
 		</p>
 	</form>
-    
-    <h2>Cone excursion in mm</h2>
+    <h2>
+		<div id="exc_caption">
+			Cone excursion in mm
+		</div>
+	</h2>
     <div id="excursion" style="width:600px;height:300px;"></div>
 	
-    <h2>Sensitivity in dB SPL @ 1m</h2>
+	<h2>
+		<div id="sens_caption">
+			Sensitivity in dB SPL @ 1m
+		</div>
+	</h2>
     <div id="sensitivity" style="width:600px;height:300px;"></div>
 	
-    <h2>Port air speed in mach</h2>
+	<h2>
+		<div id="speed_caption">
+			Port air speed in Mach
+		</div>
+	</h2>
     <div id="mach" style="width:600px;height:300px;"></div>
 	
     <h2>Reported Data</h2>
@@ -223,7 +242,7 @@
 		V_box = dprint("V_box = ", V_liters*0.001)
 		Aport = dprint("Aport = ", Aport_cm*0.01)
 		Bport = dprint("Bport = ", Bport_cm*0.01)
-		Sport = dprint("Sport = ", Aport*Bport*nPorts)
+		S_port = dprint("S_port = ", Aport*Bport*nPorts)
 		
 		if (Aport < Bport) Rport = dprint("Rport = ", Aport/2)
 		else Rport = dprint("Rport = ", Bport/2)
@@ -238,10 +257,11 @@
 		M_ms = dprint("M_ms, mass of driver in kg = ", Km/Math.pow(ws,2))
 		Bl = dprint("Bl, field-length product in Telsa = ", Math.sqrt(R_e*Km/Qes/ws))
 		Kbox = dprint("Kbox, spring constant of cone pushing box air in N/m = ", Math.pow(S_d,2)*bpatm*Ndrivers/V_box)
+		C_ms = dprint("Cms", 1/Kbox)
 		VinSens = dprint("VinSens, input voltage amplitude for sensitivity graph in V = ", Math.sqrt(PinSens/Ndrivers*Znom))
 		VinExc = dprint("VinExc, input voltage amplitude for excursion graph in V = ", Math.sqrt(2*PinExc/Ndrivers*Znom))
 		Bl2 = dprint("Bl^2, square of Bl = ", Math.pow(Bl,2))
-		lport = dprint("lport, length of port in m = ", Sport*bpatm/rho/V_box/wp2 - Rport*2*endCorrect)
+		lport = dprint("lport, length of port in m = ", S_port*bpatm/rho/V_box/wp2 - Rport*2*endCorrect)
 		Lport_cm = dprint("lport, length of port in cm = ", lport*100)
 	}
 
@@ -266,9 +286,9 @@
 		// I've used Sympy within a Jupyter notebook to derive and generate these formulas. They were
 		// printed out within Jupyter using a function that generates Javascript syntax automatically.
 
-		C_eff = V_box*(Math.pow(w, 2) - Math.pow(w_port, 2))/(Math.pow(S_d, 2)*Math.pow(c, 2)*Math.pow(w, 2)*rho);
+		C_eff =  C_ms*V_box*(Math.pow(w, 2) - Math.pow(w_port, 2))/(C_ms*Math.pow(S_d, 2)*Math.pow(c, 2)*Math.pow(w, 2)*rho + V_box*(Math.pow(w, 2) - Math.pow(w_port, 2)))
 		xre =  Bl*C_eff*(-1.0*C_eff*L_e*R_ms*Math.pow(w, 2) - C_eff*M_ms*R_e*Math.pow(w, 2) + R_e)/(Math.pow(Bl, 4)*Math.pow(C_eff, 2)*Math.pow(w, 2) - 2.0*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*L_e*M_ms*Math.pow(w, 4) + 2*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*R_e*R_ms*Math.pow(w, 2) + 2.0*Math.pow(Bl, 2)*C_eff*L_e*Math.pow(w, 2) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(M_ms, 2)*Math.pow(w, 6) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(M_ms, 2)*Math.pow(R_e, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(R_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 2) - 2.0*C_eff*Math.pow(L_e, 2)*M_ms*Math.pow(w, 4) - 2*C_eff*M_ms*Math.pow(R_e, 2)*Math.pow(w, 2) + 1.0*Math.pow(L_e, 2)*Math.pow(w, 2) + Math.pow(R_e, 2))
-		xim =  Bl*C_eff*w*(-Math.pow(Bl, 2)*C_eff + 1.0*C_eff*L_e*M_ms*Math.pow(w, 2) - C_eff*R_e*R_ms - 1.0*L_e)/(Math.pow(Bl, 4)*Math.pow(C_eff, 2)*Math.pow(w, 2) - 2.0*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*L_e*M_ms*Math.pow(w, 4) + 2*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*R_e*R_ms*Math.pow(w, 2) + 2.0*Math.pow(Bl, 2)*C_eff*L_e*Math.pow(w, 2) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(M_ms, 2)*Math.pow(w, 6) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(M_ms, 2)*Math.pow(R_e, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(R_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 2) - 2.0*C_eff*Math.pow(L_e, 2)*M_ms*Math.pow(w, 4) - 2*C_eff*M_ms*Math.pow(R_e, 2)*Math.pow(w, 2) + 1.0*Math.pow(L_e, 2)*Math.pow(w, 2) + Math.pow(R_e, 2));
+		xim =  Bl*C_eff*w*(-Math.pow(Bl, 2)*C_eff + 1.0*C_eff*L_e*M_ms*Math.pow(w, 2) - C_eff*R_e*R_ms - 1.0*L_e)/(Math.pow(Bl, 4)*Math.pow(C_eff, 2)*Math.pow(w, 2) - 2.0*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*L_e*M_ms*Math.pow(w, 4) + 2*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*R_e*R_ms*Math.pow(w, 2) + 2.0*Math.pow(Bl, 2)*C_eff*L_e*Math.pow(w, 2) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(M_ms, 2)*Math.pow(w, 6) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(M_ms, 2)*Math.pow(R_e, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(R_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 2) - 2.0*C_eff*Math.pow(L_e, 2)*M_ms*Math.pow(w, 4) - 2*C_eff*M_ms*Math.pow(R_e, 2)*Math.pow(w, 2) + 1.0*Math.pow(L_e, 2)*Math.pow(w, 2) + Math.pow(R_e, 2))
 
 		//////////////////////// End of computer generated code ////////////// 
 
@@ -286,8 +306,10 @@
 		
 		// compute port air speed
 		
-		fp = w2/wp2 - 1;
-		speed = Math.abs(w*xabs*VinExc*S_d*Ndrivers/Sport/fp/c);
+		//fp = w2/wp2 - 1;
+		// speed = Math.abs(w*xabs*VinExc*S_d*Ndrivers/S_port/fp/c);
+		frac = S_d*Math.pow(w_port, 2)/(S_port*(Math.pow(w, 2) - Math.pow(w_port, 2)))
+		speed = Math.abs(w*xabs*VinExc*frac/c)
 		
 		// compute SPL
 		
@@ -314,7 +336,11 @@
 			m1 = []; // port air speed in Mach
 			m2 = []; // port air speed, waveform based
 			raws = 'f(hz), x(mm), v(mach)\n';
-			for (f = 20; f <= 250; f += 1)
+			fmin = Math.floor(document.forms['example']['fmin'].value)
+			fmax = Math.floor(document.forms['example']['fmax'].value)
+			//for (f = fmin; f <= fmax; f += 1)
+			f = fmin
+			while (f <= fmax)
 			{
 				u = xexcur(f);
 				raws = raws + f + ', ' + u[0] + ', ' + u[1] + '\n';
@@ -332,37 +358,61 @@
 				}
 				d2.push([f,u0sum]);
 				m2.push([f,u1sum]);
-				 
+				f *= 1.02;
 			}
 			document.forms['after'].rawdata.value = raws;
-			d3 = [[20,Xmax_mm],[250,Xmax_mm]];
+
+			d3 = [[fmin,Xmax_mm],[fmax,Xmax_mm]];
+
 			xa = {
-					transform: function (v) {return Math.log(v)},
-					inverseTransform: function (v) {return Math.exp(v)},
-					ticks: [20, 30, 40, 50, 60, 80, 100, 120, 150, 200, [250, "250 Hz"]]
-					}
-					
-			$.plot($("#excursion"), 
-				[{label: "Peak @ " + PinExc + " W", data: d1},
-				{label: "Waveform based @ " + PinExc + " W", data: d2},
-				{label: "Xmax", data: d3}],
-				{grid: {backgroundColor: "white"}},
-				{xaxis: xa});
-			
-			$.plot($("#sensitivity"), 
-				[{label: "1 W", data: s1},
-				{label: PinExc + " W", data: s2}],
-				{grid: {backgroundColor: "white"}},
-				{xaxis: xa});
+				transform: function (v) {return Math.log(v)},
+				inverseTransform: function (v) {return Math.exp(v)},
+				//ticks: [20, 30, 40, 50, 60, 80, 100, 120, 150, 200, [250, "250 Hz"]]
+				ticks: [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]
+			}
+
+			options = {
+				legend: {
+					show: true,
+					position: "ne", // or "nw", "se", "sw"
+					//margin: [10, 10], // Margin to plot edge in pixels
+					//backgroundOpacity: 0.5,
+					noColumns: 1
+				},
+				grid: {backgroundColor: "white"},
+				//xaxis: {mode: "log"}
+				xaxis: xa
+			}
 				
-			$.plot($("#mach"), 
-				[
-					{label: "Peak @ " + PinExc + " W", data: m1},
-					// Decided that waveform based port air speed isn't useful
-					// {label: "Waveform based @ " + PinExc + " W", data: m2}
-				],
-				{grid: {backgroundColor: "white"}},
-				{xaxis: xa});
+
+
+		divElement = document.getElementById("exc_caption");
+		divElement.textContent = "Cone excursion in mm @ " + PinExc + " W"
+
+		$.plot($("#excursion"), 
+			[{label: "Peak @ " + PinExc + " W", data: d1},
+			//{label: "Waveform based @ " + PinExc + " W", data: d2},
+			{label: "Xmax", data: d3}],
+			options);
+
+		divElement = document.getElementById("sens_caption");
+		divElement.textContent = "Sensitivity in dB SPL @ 1 and " + PinExc + " W"
+		
+		$.plot($("#sensitivity"), 
+			[{label: "1 W", data: s1},
+			{label: PinExc + " W", data: s2}],
+			options);
+			
+		divElement = document.getElementById("speed_caption");
+		divElement.textContent = "Port air speed in Mach @ " + PinExc + " W"
+
+		$.plot($("#mach"), 
+			[
+				{label: "Peak @ " + PinExc + " W", data: m1},
+				// Decided that waveform based port air speed isn't useful
+				// {label: "Waveform based @ " + PinExc + " W", data: m2}
+			],
+			options);
 		}
 		
 		// assign the above to the re-compute button
