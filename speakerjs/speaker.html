@@ -22,11 +22,13 @@
 	<!--script language="javascript" type="text/javascript" src="flot/jquery.flot.drawSeries.js"></script-->
 	<!--script language="javascript" type="text/javascript" src="flot/jquery.flot.uiConstants.js"></script-->
 	<!--script language="javascript" type="text/javascript" src="flot/jquery.flot.logaxis.js"></script-->
+	<script language="javascript" type="text/javascript" src="generated_code.js"></script>
+	
 </head>
 <body>
   <div class="container">
-    <h1>Speaker Modeling Program</h1>
-	Revision date: March 11, 2026<br>
+    <h1>Basic Speaker Modeling Program</h1>
+	Revision date: March 24, 2026<br>
 	<br>
 	This is a simple modeling program for basic sealed and ported speakers. It uses the formulas
 	that I derived in my speaker theory notebooks.<br>
@@ -96,8 +98,8 @@
 				formparama('Driver name', 'Dname', 'Eminence 2512-ii', '')
 				formparama('F<sub>s</sub>', 'Fs', '53.1', 'Hz')
 				formparama('R<sub>e</sub>', 'R_e', '5.28', 'Ohms')
-				formparama('Q<sub>es</sub>', 'Qes', '0.64', '')
-				formparama('Q<sub>ms</sub>', 'Qms', '2.94', '')
+				formparama('Q<sub>es</sub>', 'Q_es', '0.64', '')
+				formparama('Q<sub>ms</sub>', 'Q_ms', '2.94', '')
 				formparama('V<sub>as</sub>', 'Vas', '67.44', 'Liters')
 				formparama('S<sub>d</sub>', 'Sd_cm2', '519.5', 'cm<sup>2</sup>')
 				formparama('X<sub>max</sub>', 'Xmax', '4.9', 'mm')
@@ -215,8 +217,8 @@
 		dprints('Dname')
 		Fs = dprinty('Fs')
 		R_e = dprinty('R_e')
-		Qes = dprinty('Qes')
-		Qms = dprinty('Qms')
+		Q_es = dprinty('Q_es')
+		Q_ms = dprinty('Q_ms')
 		Vas_liters = dprinty('Vas')
 		Sd_cm2 = dprinty('Sd_cm2')
 		Xmax_mm = dprinty('Xmax')
@@ -235,7 +237,7 @@
 		
 		dprint('Parameters in SI units', '')
 
-		Vas = dprint("Vas = ", Vas_liters*0.001)
+		V_as = dprint("V_as = ", Vas_liters*0.001)
 		S_d = dprint("S_d = ", Sd_cm2*0.0001)
 		Xmax = dprint("Xmax = ", Xmax_mm*0.001)
 		L_e = dprint("L_e = ", Le_mH*0.001)
@@ -249,20 +251,17 @@
 
 		dprint ('Computed electromechanical parameters in SI units', '')
 
-		ws = dprint("ws, Fs in angular units = ", Fs*2*Math.PI)
+		w_s = dprint("w_s, Fs in angular units = ", Fs*2*Math.PI)
 		w_port = dprint("w_port, Fport in angular units = ", Fport*2*Math.PI)
 		wp2 = dprint("w_port^2 = ", Math.pow(w_port,2))
-		Km = dprint("Km, spring constant of driver in N/m = ", bpatm*Math.pow(S_d,2)/Vas)
-		R_ms = dprint("R_ms, mechanical damping factor of driver in N s/m = ", Km/Qms/ws)
-		M_ms = dprint("M_ms, mass of driver in kg = ", Km/Math.pow(ws,2))
-		Bl = dprint("Bl, field-length product in Telsa = ", Math.sqrt(R_e*Km/Qes/ws))
+		Km = dprint("Km, spring constant of driver in N/m = ", bpatm*Math.pow(S_d,2)/V_as)
 		Kbox = dprint("Kbox, spring constant of cone pushing box air in N/m = ", Math.pow(S_d,2)*bpatm*Ndrivers/V_box)
-		C_ms = dprint("Cms", 1/Kbox)
 		VinSens = dprint("VinSens, input voltage amplitude for sensitivity graph in V = ", Math.sqrt(PinSens/Ndrivers*Znom))
 		VinExc = dprint("VinExc, input voltage amplitude for excursion graph in V = ", Math.sqrt(2*PinExc/Ndrivers*Znom))
-		Bl2 = dprint("Bl^2, square of Bl = ", Math.pow(Bl,2))
+		//Bl2 = dprint("Bl^2, square of Bl = ", Math.pow(Bl,2))
 		lport = dprint("lport, length of port in m = ", S_port*bpatm/rho/V_box/wp2 - Rport*2*endCorrect)
 		Lport_cm = dprint("lport, length of port in cm = ", lport*100)
+		generated_code_1();
 	}
 
 	// Compute excursion for 1 V input signal
@@ -271,34 +270,21 @@
 	{
 		// angular frequency
 		
-		w = f*2*Math.PI;
+		omega = f*2*Math.PI;
 		
-		// handle special case if w = w_port, to avoid zero divide
+		// handle special case if w = w_port, to avoid zero divide. This is a bit
+		// of a cheat, but will not be noticeable in the graphs.
 		
-		if (Math.abs(w - w_port) < 0.001) 
+		if (Math.abs(omega - w_port) < 0.001) 
 		{
-			w = w + 0.0001;
+			omega = omega + 0.0001;
 		}
 
-		///////////////////////// Computer generated code here /////////////////
-
-		// To reduce the chance of math errors, and ease my effort at keeping this program up to date,
-		// I've used Sympy within a Jupyter notebook to derive and generate these formulas. They were
-		// printed out within Jupyter using a function that generates Javascript syntax automatically.
-
-		C_eff =  C_ms*V_box*(Math.pow(w, 2) - Math.pow(w_port, 2))/(C_ms*Math.pow(S_d, 2)*Math.pow(c, 2)*Math.pow(w, 2)*rho + V_box*(Math.pow(w, 2) - Math.pow(w_port, 2)))
-		xre =  Bl*C_eff*(-1.0*C_eff*L_e*R_ms*Math.pow(w, 2) - C_eff*M_ms*R_e*Math.pow(w, 2) + R_e)/(Math.pow(Bl, 4)*Math.pow(C_eff, 2)*Math.pow(w, 2) - 2.0*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*L_e*M_ms*Math.pow(w, 4) + 2*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*R_e*R_ms*Math.pow(w, 2) + 2.0*Math.pow(Bl, 2)*C_eff*L_e*Math.pow(w, 2) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(M_ms, 2)*Math.pow(w, 6) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(M_ms, 2)*Math.pow(R_e, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(R_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 2) - 2.0*C_eff*Math.pow(L_e, 2)*M_ms*Math.pow(w, 4) - 2*C_eff*M_ms*Math.pow(R_e, 2)*Math.pow(w, 2) + 1.0*Math.pow(L_e, 2)*Math.pow(w, 2) + Math.pow(R_e, 2))
-		xim =  Bl*C_eff*w*(-Math.pow(Bl, 2)*C_eff + 1.0*C_eff*L_e*M_ms*Math.pow(w, 2) - C_eff*R_e*R_ms - 1.0*L_e)/(Math.pow(Bl, 4)*Math.pow(C_eff, 2)*Math.pow(w, 2) - 2.0*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*L_e*M_ms*Math.pow(w, 4) + 2*Math.pow(Bl, 2)*Math.pow(C_eff, 2)*R_e*R_ms*Math.pow(w, 2) + 2.0*Math.pow(Bl, 2)*C_eff*L_e*Math.pow(w, 2) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(M_ms, 2)*Math.pow(w, 6) + 1.0*Math.pow(C_eff, 2)*Math.pow(L_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(M_ms, 2)*Math.pow(R_e, 2)*Math.pow(w, 4) + Math.pow(C_eff, 2)*Math.pow(R_e, 2)*Math.pow(R_ms, 2)*Math.pow(w, 2) - 2.0*C_eff*Math.pow(L_e, 2)*M_ms*Math.pow(w, 4) - 2*C_eff*M_ms*Math.pow(R_e, 2)*Math.pow(w, 2) + 1.0*Math.pow(L_e, 2)*Math.pow(w, 2) + Math.pow(R_e, 2))
-
-		//////////////////////// End of computer generated code ////////////// 
-
-		w2 = Math.pow(w,2);
+		generated_code_2(omega)
 		
 		// port factor
 		
-		pf = w2/(w2 - wp2)
-		
-		xabs = Math.sqrt(Math.pow(xre,2) + Math.pow(xim,2));
+		pf = Math.pow(omega, 2)/(Math.pow(omega, 2) - Math.pow(w_port, 2))
 		
 		// convert excursion into mm
 		
@@ -306,17 +292,15 @@
 		
 		// compute port air speed
 		
-		//fp = w2/wp2 - 1;
-		// speed = Math.abs(w*xabs*VinExc*S_d*Ndrivers/S_port/fp/c);
-		frac = S_d*Math.pow(w_port, 2)/(S_port*(Math.pow(w, 2) - Math.pow(w_port, 2)))
-		speed = Math.abs(w*xabs*VinExc*frac/c)
+		// frac = S_d*Math.pow(w_port, 2)/(S_port*(Math.pow(omega, 2) - Math.pow(w_port, 2)))
+		speed = Math.abs(omega*xabs*VinExc*port_cone_frac/c)
 		
 		// compute SPL
 		
-		P1 = 20*Math.log(xabs*Math.abs(VinSens*w2*rho*S_d*
+		P1 = 20*Math.log(xabs*Math.abs(VinSens*Math.pow(omega, 2)*rho*S_d*
 			Ndrivers*pf/2/Dist/Math.PI/splref))/Math.log(10);
 			
-		P2 = 20*Math.log(xabs*Math.abs(VinExc*w2*rho*S_d*
+		P2 = 20*Math.log(xabs*Math.abs(VinExc*Math.pow(omega, 2)*rho*S_d*
 			Ndrivers*pf/2/Dist/Math.PI/splref))/Math.log(10);
 			
 		return [xExc, speed, P1, P2];
