@@ -21,25 +21,13 @@ By day, I'm a senior staff scientist with Thermo Fisher Scientific Corp., the wo
 
 **3/13/2026** [Online speaker modeling program (updated)](SpeakerTheory/speakerjs/speaker.html): This is a basic speaker modeling program that started as an exercise to learn Javascript. It has proven a lot easier to maintain than the later Python version, so I'm going to keep it up to date from now on. This version reconciles the math formulas with my latest derivations in the speaker theory repo.
 
-**12/25/2024** **Speaker theory**: I've re-written my derivation of the speaker response formulas using **SymPy**, the symbolic algebra package for Python. It doesn't change any of my results or programs, but is less error prone and more maintainable than writing derivations by hand and typing them in to the Markdown editor. Also, the symbolic and numerical calculations are tied together, avoiding the problem of "two sets of books."
-
-* [Here's a PDF of my main theory article](SpeakerTheory/speakerTheorySympy.pdf)
-
-* [Here's the GitHub repo with source code and stuff]
-
-**11/19/2023** [New! 8-inch bass speaker design](8-in-bass-speaker/index.html): I built this speaker just before the pandemic, and have used it form most of my gigs since then.
+**12/25/2024** [Speaker Theory](SpeakerTheory/index.html): I've re-written my derivation of the speaker response formulas using **SymPy**, the symbolic algebra package for Python. It doesn't change any of my results or programs, but is less error prone and more maintainable than writing derivations by hand and typing them in to the Markdown editor. Also, the symbolic and numerical calculations are tied together, avoiding the problem of "two sets of books."
 
 **1/17/2023** [Optical Ray Tracing (GitHub repo)](https://github.com/bassistTech/rayTrace): This is a primitive optical ray tracing program, in the form of a Jupyter notebook. 
 
 **1/3/2023**: [Measuring Noise](measuring-noise/measuring-noise.html) and [low-noise test amplifier](measuring-noise/low-noise-test-amplifier.html). These articles document my technique for measuring very low levels of electronic noise using mainstream hardware and software. I used this setup to test a new design.
 
 **Older stuff**:
-
-[Speaker Theory (GitHub repo)](https://github.com/bassistTech/SpeakerTheory): I've always been interested in how gear works, including speakers. For years, comments on forums would say things like: "Speakers work in this way or that way, because of the physics." I always wondered: What physics?
-
-I decided to derive the basic electromagnetic theory of sealed and ported speakers from scratch. Here's what I've learned so far. There are two links here. The first is to a GitHub page with "source code" for my derivations, in case you want to do calculations yourself. The second is a PDF of my article in case anybody just wants to read it.
-
-Admittedly, it's not very readable. I need to go back and improve it! If you just want to read the article, [here's a PDF](https://github.com/bassistTech/SpeakerTheory/blob/master/SpeakerTheory.pdf)
 
 [12-inch bass speaker design article](12-in-bass-speaker/index.html): I built this speaker in 2006, and it's still alive and kicking. I've included a brief technical write-up and sketches of construction plans. It uses an Eminence DeltaLite 2512-ii driver, which is one of the first neodymium-magnet drivers suitable for bass speaker use. Newer drivers outperform the 2512-ii in terms of power handling, but what I've got is more than I'll ever need for all of my gig work.
 
