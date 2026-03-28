@@ -19,11 +19,13 @@ By day, I'm a senior staff scientist with Thermo Fisher Scientific Corp., the wo
 
 ## Blogs, Articles, Projects
 
-**3/13/2026** [Online speaker modeling program (updated)](speakerjs/speaker.html): This is a basic speaker modeling program that started as an exercise to learn Javascript. It has proven a lot easier to maintain than the later Python version, so I'm going to keep it up to date from now on. This version reconciles the math formulas with my latest derivations in the speaker theory repo.
+**3/13/2026** [Online speaker modeling program (updated)](SpeakerTheory/speakerjs/speaker.html): This is a basic speaker modeling program that started as an exercise to learn Javascript. It has proven a lot easier to maintain than the later Python version, so I'm going to keep it up to date from now on. This version reconciles the math formulas with my latest derivations in the speaker theory repo.
 
-**12/25/2024** [Speaker Theory (GitHub repo)](https://github.com/bassistTech/SpeakerTheory): I've re-written my derivation of the speaker response formulas using **SymPy**, the symbolic algebra package for Python. It doesn't change any of my results or programs, but is less error prone and more maintainable than writing derivations by hand and typing them in to the Markdown editor. Also, the symbolic and numerical calculations are tied together, avoiding the problem of "two sets of books."
+**12/25/2024** **Speaker theory**: I've re-written my derivation of the speaker response formulas using **SymPy**, the symbolic algebra package for Python. It doesn't change any of my results or programs, but is less error prone and more maintainable than writing derivations by hand and typing them in to the Markdown editor. Also, the symbolic and numerical calculations are tied together, avoiding the problem of "two sets of books."
 
-* [Here's a PDF of my main theory article](https://github.com/bassistTech/SpeakerTheory/blob/master/speakerTheorySympy.pdf?raw=true)
+* [Here's a PDF of my main theory article](SpeakerTheory/speakerTheorySympy.pdf)
+
+* [Here's the GitHub repo with source code and stuff]
 
 **11/19/2023** [New! 8-inch bass speaker design](8-in-bass-speaker/index.html): I built this speaker just before the pandemic, and have used it form most of my gigs since then.
 
