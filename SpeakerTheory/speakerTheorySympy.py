@@ -5,15 +5,23 @@
 # 
 # Francis Deck
 # 
-# **Goal**: Derive the speaker response equations from the definitions of the Thiele-Small parameters and basic electromechanical laws. I'm using Wikipedia for my reference on the TS parameters:
+# ## Summary
 # 
-# https://en.wikipedia.org/wiki/Thiele/Small_parameters
+# Welcome to my speaker design theory notebook! The goal of this notebook is to derive the speaker response equations from the definitions of the Thiele-Small parameters and basic electromechanical laws.
 # 
-# All of my calculations will be done using **sympy**, the symbolic algebra package for Python. As a result, I've hopefully minimized my chance of making mistakes in long drawn-out derivations.
+# **How to read this notebook**: At first glance, it might be hard to tell what this "notebook" is. Is it an article? Is it a computer program? The answer to both questions is: Yes.
+# 
+# This notebook uses **jupyter**, which is a framework for creating notebooks that combine text, program code, and results, in a single document. It's like a lab notebook that can do things. Some people have begun using jupyter to create articles, by hiding the code, leaving just the text and results. That would make it look more like a textbook or research paper, but I prefer to leave my code out in the open for all to see. It shows what I actually did.
+# 
+# To make it a bit more complicated, all of my calculations will be done using **sympy**, the symbolic algebra package for Python. As a result, I've hopefully minimized my chance of making mistakes in long drawn-out derivations.
 # 
 # A drawback of **sympy** and most other computer algebra tools, is that they don't necessarily preserve the ordering of symbols, thus it's hard to enforce good notational conventions. The expressions will be harder to read than ones entered by hand.
+# 
+# **For casual reading**, skim past the equations and program code, and just read the text.
+# 
+# **For deeper reading**, follow the equations, but understand that they're just points along the way as I guide **sympy** towards a complete model of a speaker.
 
-# In[239]:
+# In[16]:
 
 
 import matplotlib.pyplot as plt
@@ -32,7 +40,7 @@ def displayEq(sym, expr):
 
 # **Sympy** needs to have all symbols defined. I'm putting them all in one place, to keep them from cluttering the rest of the notebook.
 
-# In[240]:
+# In[17]:
 
 
 x, v, a, X = sp.symbols('x v a X')
@@ -66,11 +74,11 @@ N_d = sp.symbols('N_d')
 # 
 # The phasor transformation is a mathematical tool that allows us to convert a time-domain signal into a frequency-domain signal. It's based on a strong limiting assumption of linear behavior, meaning that f(a + b) = f(a) + f(b). This is also called a "small signal" model.
 # 
-# The magnitudes V and X are assumed to be complex, meaning that they carry both magnitude and phase.
+# The magnitudes V and X are assumed to be complex numbers, meaning that they carry both magnitude and phase.
 # 
 # The "physical laws" used here are all approximate. Each one assigns a single parameter to a physical behavior, so that the resulting equations remain simple. Empirically, the laws work pretty well in the small-signal domain, and speakers are designed to obey those laws.
 
-# In[241]:
+# In[18]:
 
 
 V_in = sp.nsimplify(V*sp.exp(1j*omega*t))
@@ -97,8 +105,10 @@ displayEq('a', a)
 # $Bl$ is the product of the magnetic field and the length of wire suspended in the field. The general form of Faraday's Law is a vector equation, but the speaker is designed so that the voice coil wire is always perpendicular to the field.
 # 
 # The total voltage across the terminals of the voice coil is the sum of these two terms. We enter the equation for the voltage, then solve it for the current.
+# 
+# **Math note**: When you see an imaginary number, such as $iBLX\omega$ in the following expression, what you're looking at is a 90 degree phase shift. A good interpretation here is that the *current* which is what produces the driving force on the cone, lags behind the input voltage. It also represents a form of *damping*, which is a loss of energy in the form of heat.
 
-# In[242]:
+# In[19]:
 
 
 I_in = sp.symbols('I_{in}')
@@ -115,7 +125,7 @@ displayEq('I_{in}', I_in)
 # 
 # I've substituted the equation for $I$ given above.
 
-# In[243]:
+# In[20]:
 
 
 F_mag = sp.expand(BL*I_in)
@@ -126,8 +136,10 @@ displayEq('F_{mag}', F_mag)
 # ## Hooke's Law
 # 
 # The suspension of the cone (spider and surround) resist its displacement. A single parameter, the "compliance," relates force and displacement. It's the reciprocal of the familiar spring constant from physics class.
+# 
+# The spring force has no imaginary part, thus it represents an instant reaction to the motion of the cone, and also, results in no energy loss. It's purely an energy storage mechanism.
 
-# In[244]:
+# In[21]:
 
 
 F_spring = -x/C_ms
@@ -137,11 +149,11 @@ displayEq('F_{spring}', F_spring)
 
 # ## Mechanical damping
 # 
-# The suspension is not a perfect spring. A small amount of the energy required to move the coil is converted into heat by friction in the materials. This is represented by a velocity-dependent force with a single damping constant.
+# The suspension is not a perfect spring. A small amount of the energy required to move the cone is converted into heat by friction in the materials. This is represented by a velocity-dependent force with a single damping constant.
 # 
-# Note that the velocity is represented by the derivative of displacement.
+# Note that the velocity is represented by the derivative of displacement. Also, it's a purely imaginary value, meaning that it introduces a phase shift as well as a loss of energy in the form of heat.
 
-# In[245]:
+# In[22]:
 
 
 F_damp = -R_ms*v
@@ -153,7 +165,7 @@ displayEq('F_{damp}', F_damp)
 # 
 # Newton's Law is the familiar $F = ma$ from physics class. I'm representing it as a force that resists acceleration.
 
-# In[246]:
+# In[65]:
 
 
 F_inertial = -1*M_ms*a
@@ -164,8 +176,10 @@ displayEq('F_{inertial}', F_inertial)
 # ## Combined equation of motion
 # 
 # This equation is Newton's third law, which is that the sum of the forces on the cone is zero. It expresses everything we know about the speaker so far.
+# 
+# Now you can see both real and imaginary terms, with both positive and negative signs. This is what makes speaker theory complicated: What seems like it should be a simple matter of an input current producing a force on the cone, has now turned into a whole bunch of reactionary forces, "pointing in all directions" as it were, and all dependent on frequency in different ways.
 
-# In[247]:
+# In[67]:
 
 
 eq1 = sp.Eq(0, F_mag + F_spring + F_damp + F_inertial)
@@ -175,7 +189,7 @@ eq1
 
 # ## Solving the equation of motion
 
-# In[248]:
+# In[68]:
 
 
 x_driver = sp.solve(eq1, X)[0]
@@ -186,8 +200,10 @@ displayEq('X', x_driver)
 # ## The impedance curve
 # 
 # Impedance is the ratio of voltage to current, both of which have already been expressed as equations.
+# 
+# *I don't have much use for the impedance curve* in my design explorations. But it has its uses. Perhaps the most important is that electrical measurements are easier than acoustical ones. The impedance curve can be measured on the workbench, and does not require a high quality microphone or an anechoic chamber. But the electrical and acoustical behavior of the speaker are related, and you can learn a lot from the impedance curve, including the resonant frequency, the Q factors, and the port tuning frequency if there is one. Also, plotting the theoretical impedance curve is a good way to check that I've gotten my math right so far.
 
-# In[249]:
+# In[69]:
 
 
 z_driver = sp.simplify((V_in/I_in).subs(X, x_driver))
@@ -201,11 +217,15 @@ displayEq('Z(0)', z_driver.subs(omega, 0))
 
 # ## Unpack the Thiele-Small parameters
 # 
+# I'm using Wikipedia for my reference on the TS parameters:
+# 
+# https://en.wikipedia.org/wiki/Thiele/Small_parameters
+# 
 # Datasheets usually give the Thiele-Small parameters but not always the electromechanical parameters. I'm going to treat the definitions of the Thiele-Small parameters as 4 equations and solve for the elctromechanical parameters. The result is a set of formulas for computing the EM parameters.
 # 
 # I've elaborated on the constants $c^2 \rho$ in the section about the sealed box.
 
-# In[250]:
+# In[70]:
 
 
 eq2 = sp.Eq(w_s, 1/sp.sqrt(C_ms*M_ms))
@@ -240,7 +260,7 @@ em_parameters = {C_ms: params[0], M_ms: params[1], R_ms: params[2], BL: params[3
 # 
 # In anticipation of getting to the box and port theories, I've added parameters for a basic ported box.
 # 
-# ### Dealing with multiple drivers and ports, read carefully
+# **Dealing with multiple drivers and ports, read carefully**
 # 
 # My derivations deal with multiple drivers and ports in the following ways:
 # 
@@ -258,13 +278,11 @@ em_parameters = {C_ms: params[0], M_ms: params[1], R_ms: params[2], BL: params[3
 # 
 # 7. There will be a separate notebook for testing whether my treatment of multiple drivers makes sense.
 
-# In[251]:
+# In[71]:
 
 
 driver_params = {
     # Thiele-Small parameters from Eminence DeltaLite 2512-ii driver
-    # 'Znom': 8.0, # Nominal impedance, Ohms
-    #'P_e': 250, # Rated power, Watts, we don't use this.
     'f_s': 53.1, # Resonant frequency, Hz
     w_s: sp.N(53.1*2*sp.pi), # Resonant angular frequency, Hz
     R_e: 5.28, # DC resistance, Ohms
@@ -278,16 +296,16 @@ driver_params = {
     rho: 1.2, # Air density, kg/m^3
     c: 343, # Speed of sound, m/s
     # System parameters
-    # 'P_in_rms': 100, # Input power, Watts
     R_ref: 1.0, # Reference distance for SPL calculation, m
     P_ref: 20e-6, # Reference sound pressure for SPL calculation, Pa
 }
 
 def finish_driver_params(driver_params):
+    '''
+    These are parameter conversions needed by every analysis
+    '''
     # Convert Watts to amplitude in Volts. This is the *amplitude* of the sinusoid
-    # not the RMS value
-    # driver_params[V] = sp.sqrt(2*driver_params['P_in_rms']*driver_params['Znom'])
-    # Combine resistance and inductance
+    # not the RMS value. Also, combine resistance and inductance
     driver_params[Z_e] = driver_params[R_e] + 1j*omega*driver_params[L_e]
     # Frequency to angular frequency
     driver_params[w_s] = sp.N(driver_params['f_s']*2*sp.pi)
@@ -315,7 +333,7 @@ box_params[w_port] = 2*sp.pi*box_params[f_port]
 
 # This code creates a set of electromechanical parameters for the driver and box.
 
-# In[252]:
+# In[72]:
 
 
 def build_em_params(driver_params, box_params):
@@ -336,17 +354,9 @@ def build_em_params(driver_params, box_params):
 em_params = build_em_params(driver_params, box_params)
 
 
-# In[253]:
-
-
-em_params
-
-
 # ## Generate an excursion curve for the bare driver
-# 
-# The **subs()** method lets you substitute an entire list of parameters into an expression *en masse*. This actually results in *less code* than my earlier programs.
 
-# In[254]:
+# In[31]:
 
 
 fa = np.logspace(1, 3, 1000)
@@ -388,7 +398,7 @@ if __name__ == '__main__':
 # 
 # Same basic schtick.
 
-# In[255]:
+# In[32]:
 
 
 def impedance_curve(em_params, ax, label = ''):
@@ -412,7 +422,7 @@ if __name__ == '__main__':
 # 
 # $S_d$ is the frontal area of a single driver.
 
-# In[256]:
+# In[33]:
 
 
 dV = (S_d)*X
@@ -435,11 +445,11 @@ displayEq('dV', dV)
 # 
 # https://en.wikipedia.org/wiki/Speed_of_sound
 # 
-# ### The next equation here is where we introduce the number of drivers for the first time.
+# **The next equation here is where we introduce the number of drivers for the first time.**
 # 
 # I'm going to measure the pressure change based on a single driver pushing against the air in a fraction of the box volume determined by $V_{box}/N_d$. *Remember, if this gets confusing, set $N_d$ equal to 1 and ignore the number of drivers until you understand what's going on*.
 
-# In[257]:
+# In[34]:
 
 
 dP = (gamma*P_atm*dV/(V_box/N_d)).subs(gamma*P_atm, c**2*rho)
@@ -448,7 +458,7 @@ displayEq('dP', dP)
 
 # ... resulting in a force.
 
-# In[258]:
+# In[35]:
 
 
 F_box = dP*S_d
@@ -457,7 +467,7 @@ displayEq('F_{box}', F_box)
 
 # What have we got here? A force that's proportional to displacement, just like a spring. Thus we can express the effect of the box as a *compliance* which is the reciprocal of the spring constant from physics class.
 
-# In[259]:
+# In[36]:
 
 
 C_box = X/F_box
@@ -467,7 +477,7 @@ displayEq('C_{box}', C_box)
 
 # Now we can model the effect of the box. I've just combined the compliances of the driver and the box in parallel. You can see the benefit of the box. Below the resonant frequency, excursion remains roughly constant, which protects the driver from damage due to exceeding its mechanical limit. When we look at the SPL curve, we'll see that we've paid a price in low frequency extension, and gained a small but manageable "hump" in the curve.
 
-# In[260]:
+# In[37]:
 
 
 # deepcopy lets us modify em_box_params without changing the contents of em_params
@@ -486,7 +496,7 @@ if __name__ == '__main__':
 
 # ## Acoustical output
 # 
-# ### This is where the number of drivers comes back in.
+# **This is where the number of drivers comes back in.**
 # 
 # I've found this reference, from a set of acoustics lecture notes. The author derives the "far field" response of a perfect piston radiator in an infinite baffle.
 # 
@@ -528,7 +538,7 @@ if __name__ == '__main__':
 # 
 # Being careless with units turns physics units into marketing units, just saying.
 
-# In[261]:
+# In[38]:
 
 
 P_ratio = x_driver*omega**2*rho*N_d*S_d/2/sp.pi/R_ref/P_ref
@@ -569,7 +579,7 @@ if __name__ == '__main__':
 
 # The port air mass is modeled as a piston, just as the cone is. The total change of volume is equal to the sum of the volumes displaced by the cone and the port:
 
-# In[262]:
+# In[39]:
 
 
 dV = S_port/N_d*X_port + S_d*X
@@ -579,7 +589,7 @@ displayEq('dV', dV)
 
 # Change in pressure within the box. My previous derivation by hand used $\gamma P_{atm}$, so I'll make the substitution here.
 
-# In[263]:
+# In[40]:
 
 
 dP = sp.expand(-gamma*P_atm*dV/(V_box/N_d)).subs(gamma*P_atm, c**2*rho)
@@ -589,7 +599,7 @@ displayEq('dP', dP)
 
 # Equation for the force on the cone from the pressure in the box
 
-# In[264]:
+# In[41]:
 
 
 eq1 = sp.Eq(F_cone, sp.expand(dP*S_d))
@@ -599,7 +609,7 @@ eq1
 
 # I'm going to anticipate the progress of this derivation, based on having done it by hand in the past. I'll define $m_p$ in terms of the port resonant frequency. This is mainly aesthetic, to make the equations look more symmetrical. But also, the resonant frequency is typically what you plug into a speaker design program.
 
-# In[265]:
+# In[42]:
 
 
 m_port = (gamma*P_atm*(S_port)**2/(V_box)/w_port**2).subs(gamma*P_atm, c**2*rho)
@@ -609,7 +619,7 @@ displayEq('m_{port}', m_port)
 
 # Equation for the force on the port, including the inertial force on the port mass, where the mass will be defined as above.
 
-# In[266]:
+# In[43]:
 
 
 eq2 = sp.Eq(0, sp.expand(omega**2*X_port*m_port + dP*S_port))
@@ -619,7 +629,7 @@ eq2
 
 # These are two equations in two variables, can be solved for the cone and port motion
 
-# In[267]:
+# In[44]:
 
 
 result = sp.solve([eq1, eq2], [X, X_port])
@@ -632,7 +642,7 @@ displayEq('X_{port}', result[X_port])
 # 
 # For a bit more explanation, a compliance is the reciprocal of a spring constant. If this were expressed as a spring constant, it would represent how much extra resistance the cone "feels" because of the port on the other side of the box.
 
-# In[268]:
+# In[45]:
 
 
 C_ported = sp.simplify(-result[X]/F_cone)
@@ -644,7 +654,7 @@ displayEq('C_{ported}', C_ported)
 # 
 # *See that the box volume has dropped out. The cone only "cares" about the port tuning frequency!*
 
-# In[269]:
+# In[46]:
 
 
 port_cone_frac = sp.simplify(result[X_port]/result[X])
@@ -664,7 +674,7 @@ displayEq('X_{port}/X', port_cone_frac)
 
 # Now we get to see if the simulation still works. First, we need to fill in the new parameters added to the model: The port tuning frequency and box volume.
 
-# In[270]:
+# In[47]:
 
 
 def build_ported_params(em_params, f_port_hz):
@@ -682,7 +692,7 @@ if __name__ == '__main__':
     plt.show()
 
 
-# In[271]:
+# In[48]:
 
 
 def sensitivity_curve_ported(em_params, ax, label, verbose = False, show_cone = False):
@@ -717,7 +727,7 @@ if __name__ == '__main__':
 
 # Here's something to notice about the impedance curve. It goes to a minimum at the port tuning frequency. In fact, this is a way to find out what the tuning frequency is, if you can measure the impedance curve.
 
-# In[272]:
+# In[49]:
 
 
 if __name__ == '__main__':    
@@ -728,9 +738,9 @@ if __name__ == '__main__':
 
 # ## Port air speed
 # 
-# ### The number of drivers comes back in here!
+# **The number of drivers comes back in here!**
 
-# In[273]:
+# In[50]:
 
 
 def airspeed_curve_ported(em_params, ax, label, verbose = False):
@@ -754,7 +764,7 @@ if __name__ == '__main__':
 # 
 # There are more detailed port length calculators, that take the "end effects" of the port into account. I'm going to leave those for now, and look strictly at the air mass inside the port, which has this volume:
 
-# In[274]:
+# In[51]:
 
 
 V_port = m_port/rho
@@ -763,7 +773,7 @@ V_port
 
 # Thus the length is the volume divided by the area. But the effective air mass moved by the port is slightly longer than the port itself, an end correction factor times the port diameter. I'll model the port diameter as $D = \sqrt{4 S_{port}/\pi}$
 
-# In[275]:
+# In[52]:
 
 
 L_port = V_port/S_port - end_correct*sp.sqrt(4*S_port/sp.pi)
@@ -772,7 +782,7 @@ L_port
 
 # ... and we can hang some numbers on it, in meters of course:
 
-# In[276]:
+# In[53]:
 
 
 displayEq('L_{port}', sp.N(L_port.subs(em_ported_params)))
@@ -788,14 +798,14 @@ displayEq('L_{port}', sp.N(L_port.subs(em_ported_params)))
 # 
 # Formulas that are real-valued can just be translated directly. And I've arranged things so that there's only one complex-valued formula: For cone excursion.
 
-# In[277]:
+# In[54]:
 
 
 # Box compliance for sealed system. Note that this is always real valued
 C_box
 
 
-# In[278]:
+# In[55]:
 
 
 # This is the effective compliance for a sealed system
@@ -803,14 +813,14 @@ C_eff_sealed = 1/(1/C_ms + 1/C_box)
 displayEq('C_{eff, sealed}', C_eff_sealed)
 
 
-# In[279]:
+# In[56]:
 
 
 # Likewise, box compliance for a ported system
 C_ported
 
 
-# In[280]:
+# In[57]:
 
 
 # The effective compliance for a ported system
@@ -818,14 +828,14 @@ C_eff_ported = 1/(1/C_ms + 1/C_ported)
 displayEq('C_{eff, ported}', C_eff_ported)
 
 
-# In[281]:
+# In[58]:
 
 
 # Relationship between port and cone displacement. Note that this is always real valued
 port_cone_frac
 
 
-# In[282]:
+# In[59]:
 
 
 # Conversion to sound pressure at distance r
@@ -833,7 +843,7 @@ sound_pressure_ratio = omega**2*rho*S_d/2/sp.pi/R_ref/P_ref
 sound_pressure_ratio
 
 
-# In[283]:
+# In[60]:
 
 
 # Excursion formula with voltage set to 1, so my Javascript program can apply two different input voltages.
@@ -841,7 +851,7 @@ x_driver_z = x_driver.subs({Z_e: R_e + 1j*omega*L_e, V: 1})
 x_squared_real = sp.expand(x_driver_z*sp.conjugate(x_driver_z)).subs(C_ms, C_eff)
 
 
-# In[284]:
+# In[61]:
 
 
 from sympy.printing.jscode import jscode
@@ -882,12 +892,13 @@ outf.close()
 # In[ ]:
 
 
+# Code for turning this notebook into an import-able Python library
 if __name__ == '__main__':
     print('Did you remember to save first?')
     get_ipython().system('python3 -m jupyter nbconvert --to python ./speakerTheorySympy.ipynb')
 
 
-# In[ ]:
+# In[64]:
 
 
 # Code for converting this document to HTML

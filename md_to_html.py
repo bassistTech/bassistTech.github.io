@@ -7,7 +7,7 @@ preamble = '''
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Width Example</title>
+    <title>bassisttech web page</title>
     <style>
         .container {
             max-width: 900px; /* Sets the maximum width of the container */

@@ -1,1 +1,1 @@
-* Fix speaker theory repo. It's been moved into this repo.
+* Bare bones bass blender seems to be missing

@@ -11,12 +11,12 @@ My physics background is in scientific measurement. By day I work for a business
 ## Structure of this repository
 All of the PDF's are generated from Python notebooks. You can read them for enjoyment, or dig into the "source code" if you want. If you haven't found it yet, you can find the GitHub repo here:
 
-[BassistTech Speaker Theory repository](https://github.com/bassistTech/SpeakerTheory)
+[BassistTech Speaker Theory repository](https://github.com/bassistTech/bassistTech.github.io/tree/main/SpeakerTheory)
 
 ## Contents
 
-Start here: [Main speaker theory article](https://raw.githubusercontent.com/bassistTech/SpeakerTheory/refs/heads/master/speakerTheorySympy.pdf). It is where I derive the basic theory of sealed and ported speakers from a handful of basic physics laws. It's a Python notebook and uses **sympy** for its calculations, so you can see theory, code, and results in one place.
+Start here: [Main speaker theory article](speakerTheorySympy.pdf). It is where I derive the basic theory of sealed and ported speakers from a handful of basic physics laws. It's a Python notebook and uses **sympy** for its calculations, so you can see theory, code, and results in one place.
 
-[Testing multiple drivers](https://raw.githubusercontent.com/bassistTech/SpeakerTheory/refs/heads/master/Testing_multiple_drivers.pdf) is a separate notebook for testing that my main theory article handles speakers with multiple drivers correctly.
+[Testing multiple drivers](Testing_multiple_drivers.pdf) is a separate notebook for testing that my main theory article handles speakers with multiple drivers correctly.
 
 [12 and 8 inch designs](12_and_8_inch_designs_sympy.pdf) are models of the two homemade speakers that I presently use.
