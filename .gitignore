@@ -1,5 +1,5 @@
 .ipynb_checkpoints
 .virtual_documents
-.venv
+.venv/
 __pycache__
 index_files
