@@ -19,6 +19,8 @@ By day, I'm a senior staff scientist with Thermo Fisher Scientific Corp., the wo
 
 ## Blogs, Articles, Projects
 
+**7/19/2026** [New 8 inch bass speaker design](SpeakerTheory/New%208-inch%20design%20notes.pdf): This is a re-build of my little 8 inch bass speaker. I wanted to try a tilt-back design, but added a couple of other minor improvements as well.
+
 **3/13/2026** [Online speaker modeling program (updated)](SpeakerTheory/speakerjs/speaker.html): This is a basic speaker modeling program that started as an exercise to learn Javascript. It has proven a lot easier to maintain than the later Python version, so I'm going to keep it up to date from now on. This version reconciles the math formulas with my latest derivations in the speaker theory repo.
 
 **12/25/2024** [Speaker Theory](SpeakerTheory/index.html): I've re-written my derivation of the speaker response formulas using **SymPy**, the symbolic algebra package for Python. It doesn't change any of my results or programs, but is less error prone and more maintainable than writing derivations by hand and typing them in to the Markdown editor. Also, the symbolic and numerical calculations are tied together, avoiding the problem of "two sets of books."
