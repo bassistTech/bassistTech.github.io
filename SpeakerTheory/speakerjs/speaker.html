@@ -28,7 +28,7 @@
 <body>
   <div class="container">
     <h1>Basic Speaker Modeling Program</h1>
-	Revision date: March 24, 2026<br>
+	Revision date: Aug. 1, 2026<br>
 	<br>
 	This is a simple modeling program for basic sealed and ported speakers. It uses the formulas
 	that I derived in my speaker theory notebooks.<br>
@@ -297,13 +297,13 @@
 		// frac = S_d*Math.pow(w_port, 2)/(S_port*(Math.pow(omega, 2) - Math.pow(w_port, 2)))
 		speed = Math.abs(omega*xabs*VinExc*port_cone_frac/c)
 		
-		// compute SPL
+		// compute SPL. TODO: Have sympy generate these formulas automatically to guarantee consistency
 		
 		P1 = 20*Math.log(xabs*Math.abs(VinSens*Math.pow(omega, 2)*rho*S_d*
-			N_d*pf/2/Dist/Math.PI/splref))/Math.log(10);
+			N_d*pf/2/Math.sqrt(2)/Dist/Math.PI/splref))/Math.log(10);
 			
 		P2 = 20*Math.log(xabs*Math.abs(VinExc*Math.pow(omega, 2)*rho*S_d*
-			N_d*pf/2/Dist/Math.PI/splref))/Math.log(10);
+			N_d*pf/2/Math.sqrt(2)/Dist/Math.PI/splref))/Math.log(10);
 			
 		return [xExc, speed, P1, P2];
 	}  
